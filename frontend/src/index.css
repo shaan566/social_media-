@@ -1,1 +1,32 @@
 @import "tailwindcss";
+
+/* 1. Define variables first */
+:root {
+  --bg-app: #384959;
+  --bg-card: #BDDDFC;
+  --color-primary: #88BDF2;
+  --color-secondary: #6A89A7;
+  --text-heading: #ffffff;
+  --text-body: #e5e7eb;
+  --text-muted: #cbd5e1;
+  --border-ui: rgba(255, 255, 255, 0.1);
+}
+
+/* 2. Map to Tailwind theme names */
+@theme {
+  --color-app: var(--bg-app);
+  --color-card: var(--bg-card);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-heading: var(--text-heading);
+  --color-body: var(--text-body);
+  --color-muted: var(--text-muted);
+}
+
+/* 3. Apply to Base - NOTE: In v4, try without the @layer wrapper if it's failing */
+body {
+  background-color: var(--bg-app) !important;
+  color: var(--text-body) !important;
+  min-height: 100vh;
+  margin: 0;
+}
