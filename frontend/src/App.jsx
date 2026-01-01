@@ -1,12 +1,14 @@
 import React from 'react'
-import Header from './common/Header.jsx'
+import Header from './components/common/Header.jsx'
 import './App.css'
-import Footer from './common/Footer.jsx'
+import Footer from './components/common/Footer.jsx'
+import Hero from './components/home/Hero.jsx'
 
 const App = () => {
   return (
     <div >
       <Header/>
+      <Hero/>
       <Footer/>
     </div>
   )
