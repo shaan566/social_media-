@@ -4,6 +4,7 @@ import { FaLinkedin } from "react-icons/fa";
 import { FaSquareInstagram } from "react-icons/fa6";
 import { ImGithub } from "react-icons/im";
 import { RiTwitterXFill } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -15,28 +16,28 @@ const Footer = () => {
                                 <ul className="flex space-x-5">
                                   <li>
                                     <a href="https://x.com/ch60868207" target="_blank" rel="noopener noreferrer">
-                                      <div className="rounded-full bg-gray-800 p-3 hover:bg-blue-600 transition-colors duration-300 cursor-pointer">
+                                      <div className="rounded-full bg-gray-800 p-3 ">
                                         <RiTwitterXFill size={24} />
                                       </div>
                                     </a>
                                   </li>
                                   <li>
                                     <a href="https://www.linkedin.com/in/shaan510/" target="_blank" rel="noopener noreferrer">
-                                      <div className="rounded-full bg-gray-800 p-3 hover:bg-blue-600 transition-colors duration-300 cursor-pointer">
+                                      <div className="rounded-full bg-gray-800 p-3 ">
                                         <FaLinkedin size={24} />
                                       </div>
                                     </a>
                                   </li>
                                   <li>
                                     <a href="https://www.instagram.com/learn_code147/?hl=en" target="_blank" rel="noopener noreferrer">
-                                      <div className="rounded-full bg-gray-800 p-3 hover:bg-blue-600 transition-colors duration-300 cursor-pointer">
+                                      <div className="rounded-full bg-gray-800 p-3 ">
                                         <FaSquareInstagram size={24} />
                                       </div>
                                     </a>
                                   </li>
                                   <li>
                                     <a href="https://github.com/shaan566" target="_blank" rel="noopener noreferrer">
-                                      <div className="rounded-full bg-gray-800 p-3 hover:bg-blue-600 transition-colors duration-300 cursor-pointer">
+                                      <div className="rounded-full bg-gray-800 p-3 ">
                                         <ImGithub size={24} />
                                       </div>
                                     </a>
@@ -48,11 +49,11 @@ const Footer = () => {
                     <div>
                         <h2 className="font-semibold mb-5">Company</h2>
                         <ul className="text-sm space-y-2">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Explore</a></li>
-                            <li><a href="#">Notifications</a></li>
-                            <li><a href="#">Messages</a></li>
-                            <li><a href="#">Privacy policy</a></li>
+                            <li><Link to="/features">Features</Link></li>
+                            <li><Link to="/channels">Channels</Link></li>
+                            <li><Link to="/resources">Resources</Link></li>
+                            <li><Link to="/messages">Messages</Link></li>
+                            <li><Link to="/">Privacy policy</Link></li>
                         </ul>
                     </div>
                     <div>

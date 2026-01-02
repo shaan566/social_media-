@@ -1,6 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+
   return (
     <header className="bg-gray-900">
       <nav
@@ -33,22 +37,22 @@ const Header = () => {
         </div>
 
         <div className="hidden lg:flex lg:gap-x-12">
-          <a href="#" className="flex gap-x-1 text-sm font-semibold text-white">
-            Home
-          </a>
-          <a href="#" className="text-sm font-semibold text-white">
-            Explore
-          </a>
-          <a href="#" className="text-sm font-semibold text-white">
-            Notifications
-          </a>
-          <a href="#" className="text-sm font-semibold text-white">
+          <Link to="/Features" className="flex gap-x-1 text-m font-semibold text-white">
+            Features
+          </Link>
+          <Link to="/Channels" className="text-m font-semibold text-white">
+            Channels
+          </Link>
+          <Link to="/Resources" className="text-m font-semibold text-white">
+            Resources
+          </Link>
+          <Link to="/Messages" className="text-m font-semibold text-white">
             Messages
-          </a>
+          </Link>
         </div>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" className="text-sm font-semibold text-white">
+          <a href="/login" className="text-m font-semibold text-white">
             Log in <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
@@ -60,7 +64,6 @@ const Header = () => {
             <div className="flex items-center justify-between">
               <button
                 type="button"
-                command="close"
                 commandFor="mobile-menu"
                 className="-m-2.5 rounded-md p-2.5 text-gray-400"
               >
@@ -88,39 +91,40 @@ const Header = () => {
                   <div className="-mx-3">
                     <button
                       type="button"
+                      onClick={() => navigate('/Features')}
                       className="flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-semibold text-white hover:bg-white/5"
                     >
-                      Home
+                      Features
                     </button>
                   </div>
 
-                  <a
-                    href="#"
+                  <Link
+                    to="/Channels"
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-white/5"
                   >
-                    Explore
-                  </a>
-                  <a
-                    href="#"
+                    Channels
+                  </Link>
+                  <Link
+                    to="/Resources"
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-white/5"
                   >
-                    Notifications
-                  </a>
-                  <a
-                    href="#"
+                    Resources
+                  </Link>
+                  <Link
+                    to="/Resources"
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-white/5"
                   >
                     Messages
-                  </a>
+                  </Link>
                 </div>
 
                 <div className="py-6">
-                  <a
-                    href="#"
+                  <Link
+                    to="/login"
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold text-white hover:bg-white/5"
                   >
                     Log in
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -131,4 +135,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Header
