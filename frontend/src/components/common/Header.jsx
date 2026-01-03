@@ -64,6 +64,7 @@ const Header = () => {
             <div className="flex items-center justify-between">
               <button
                 type="button"
+               onClick={() => onclose()}
                 commandFor="mobile-menu"
                 className="-m-2.5 rounded-md p-2.5 text-gray-400"
               >

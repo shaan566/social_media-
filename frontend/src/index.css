@@ -6,8 +6,8 @@
   --bg-card: #BDDDFC;
   --color-primary: #88BDF2;
   --color-secondary: #6A89A7;
-  --text-heading: #ffffff;
-  --text-body: #e5e7eb;
+  --text-heading: #0a0a0a;
+  --text-body: #000000;
   --text-muted: #cbd5e1;
   --border-ui: rgba(255, 255, 255, 0.1);
 }
@@ -58,4 +58,8 @@ body {
 }
 .floating-hover:hover {
   transform: translateY(-10px) scale(1.12);
+}
+
+.label{
+  @apply text-black text-lg font-medium;
 }

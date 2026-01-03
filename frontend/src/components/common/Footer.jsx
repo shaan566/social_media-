@@ -16,28 +16,28 @@ const Footer = () => {
                                 <ul className="flex space-x-5">
                                   <li>
                                     <a href="https://x.com/ch60868207" target="_blank" rel="noopener noreferrer">
-                                      <div className="rounded-full bg-gray-800 p-3 ">
+                                      <div className="rounded-full bg-white p-3 ">
                                         <RiTwitterXFill size={24} />
                                       </div>
                                     </a>
                                   </li>
                                   <li>
                                     <a href="https://www.linkedin.com/in/shaan510/" target="_blank" rel="noopener noreferrer">
-                                      <div className="rounded-full bg-gray-800 p-3 ">
+                                      <div className="rounded-full bg-white p-3 ">
                                         <FaLinkedin size={24} />
                                       </div>
                                     </a>
                                   </li>
                                   <li>
                                     <a href="https://www.instagram.com/learn_code147/?hl=en" target="_blank" rel="noopener noreferrer">
-                                      <div className="rounded-full bg-gray-800 p-3 ">
+                                      <div className="rounded-full bg-white p-3 ">
                                         <FaSquareInstagram size={24} />
                                       </div>
                                     </a>
                                   </li>
                                   <li>
                                     <a href="https://github.com/shaan566" target="_blank" rel="noopener noreferrer">
-                                      <div className="rounded-full bg-gray-800 p-3 ">
+                                      <div className="rounded-full bg-white p-3 ">
                                         <ImGithub size={24} />
                                       </div>
                                     </a>
@@ -45,10 +45,10 @@ const Footer = () => {
                                 </ul>
                               </div>
                             </div>
-                <div className="flex-1 flex items-start md:justify-end gap-20">
+                <div className="flex-1 flex items-start text-white md:justify-end gap-20">
                     <div>
                         <h2 className="font-semibold mb-5">Company</h2>
-                        <ul className="text-sm space-y-2">
+                        <ul className="text-m space-y-2">
                             <li><Link to="/features">Features</Link></li>
                             <li><Link to="/channels">Channels</Link></li>
                             <li><Link to="/resources">Resources</Link></li>
@@ -58,7 +58,7 @@ const Footer = () => {
                     </div>
                     <div>
                         <h2 className="font-semibold  mb-5">Subscribe to our newsletter</h2>
-                        <div className="text-sm space-y-2">
+                        <div className="text-m space-y-2">
                             <p>The latest news, articles, and resources, sent to your inbox weekly.</p>
                             <div className="flex items-center gap-2 pt-4">
                                 <input className="border border-gray-500/30 placeholder-gray-500 focus:ring-2 ring-indigo-600 outline-none w-full max-w-64 h-9 rounded px-2" type="email" placeholder="Enter your email" />
@@ -68,7 +68,7 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-            <p className="pt-4 text-center text-xs md:text-sm pb-5">
+            <p className="pt-4 text-center text-xs md:text-m pb-5">
                 {new Date().getFullYear()} All Right Reserved.
             </p>
         </footer>
