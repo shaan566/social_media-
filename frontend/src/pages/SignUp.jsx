@@ -5,9 +5,9 @@ import { MdOutlineMailOutline } from "react-icons/md";
 import { GoLock } from "react-icons/go";
 import { useNavigate } from 'react-router-dom';
 import { FaUser } from "react-icons/fa";
-import FloatingDecorations from "../components/home/FloatingDecorations";
+import FloatingDecorations from "../common/FloatingDecorations"
 
-const SignUp = () => {
+const SignUp = () => {    
 
       const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -86,14 +86,18 @@ const SignUp = () => {
               </span>
               
             </div>
-            <div className = "flex flex-row items-center relative">
-            <input type="checkbox"/>
-            <span className="text-gray-600 text-sm px-5">I agree to the Terms and Conditions and Privacy Policy</span>
-           </div>
+          <div className="flex items-center relative">
+            <label className="flex items-center cursor-pointer">
+              <input type="checkbox" className="mr-2" />
+              <span className="text-gray-600 text-sm">
+                I agree to the Terms and Conditions and Privacy Policy
+              </span>
+            </label>
+          </div>
             
             <button 
             className='bg-blue-500 text-white rounded-md p-2 mt-4 hover:bg-blue-600'
-            onClick={() =>handleSubmit()}>
+            onClick={() => navigate('/otp')}>
             Submit
             </button>
            

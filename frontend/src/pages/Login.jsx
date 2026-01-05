@@ -4,7 +4,7 @@ import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { MdOutlineMailOutline } from "react-icons/md";
 import { GoLock } from "react-icons/go";
 import { useNavigate } from 'react-router-dom';
-import FloatingDecorations from "../components/home/FloatingDecorations";
+import FloatingDecorations from "../common/FloatingDecorations";
 
 const Login = () => {
 
@@ -55,16 +55,30 @@ const Login = () => {
             {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
           </span>
         </div>
+        <div className='flex flex-row '>
+         <label className="flex items-center cursor-pointer text-gray-600">
+            <input type="checkbox" className="mr-2" />
+            Remember me
+          </label>
+          <span>
+            <button 
+            className='text-blue-500 hover:underline ml-30'
+            onClick={() => navigate('/reset-password')}>Forgot Password?</button>
+          </span>
+        </div>
+
        
         
         <button 
         className='bg-blue-500 text-white rounded-md p-2 mt-4 hover:bg-blue-600'
         onClick={handleLogin}>Log In</button>
+        <div className='flex justify-center mt-10'>
         <h3 className='text-gray-600'>
           Don't have an account?
          <span className="text-blue-500 hover:underline cursor-pointer"
          onClick={() => navigate('/signup')}>Sign up</span>
         </h3>
+        </div>
       </div>
       <div className='hidden md:block'>
         <FloatingDecorations side="both" />

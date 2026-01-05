@@ -8,7 +8,7 @@ import {
   FaTiktok,
 } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
-import FloatingDecorations from "./FloatingDecorations";
+import FloatingDecorations from "../../common/FloatingDecorations";
 
 const Hero = () => {
   const [email, setEmail] = useState('');
