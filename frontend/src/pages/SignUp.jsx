@@ -98,7 +98,7 @@ const SignUp = () => {
             <button 
             className='bg-blue-500 text-white rounded-md p-2 mt-4 hover:bg-blue-600'
             onClick={() => navigate('/otp')}>
-            Submit
+            Create Account
             </button>
            
           </div>
