@@ -1,44 +1,75 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import User from './models/User.js'
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import helmet from "helmet";
+import compression from "compression";
+// import mongoSanitize from "express-mongo-sanitize";
+import cookieParser from "cookie-parser";
+import rateLimit from "express-rate-limit";
 
-import connectDB from './config/db.js';
 
+import authRoutes from "./routes/authRoute.js";
+import connectDB from "./config/db.js";
 
+dotenv.config();
 
-dotenv.config();const app = express();
+const app = express();
 
-// Connect to MongoDB
+/* =======================
+   DATABASE
+======================= */
 connectDB();
 
+
+/* =======================
+   SECURITY MIDDLEWARE
+======================= */
+app.use(helmet());
+app.use(compression());
+// app.use(mongoSanitize({
+//   sanitizeQuery: false,
+// }));
+app.use(cookieParser());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: "Too many requests, try again later",
+});
+app.use("/api", limiter);
+
+/* =======================
+   CORS
+======================= */
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+/* =======================
+   BODY PARSER
+======================= */
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+/* =======================
+   ROUTES
+======================= */
 app.get("/", (req, res) => {
-  res.send("Server running successfully");
+  res.send("Server running successfully 🚀");
 });
 
-// 🔥 TEST DATABASE ROUTE
-app.get("/test-db", async (req, res) => {
-  try {
-    const user = await User.create({
-      name: "Shaan",
-      email: "shaan@test.com",
-      password: "12345678",
-    });
+app.use("/api/auth", authRoutes);
 
-    res.json({
-      success: true,
-      message: "Database connected & user created",
-      user,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: error.message,
-    });
-  }
-});
+/* =======================
+   START SERVER
+======================= */
+const PORT = process.env.PORT || 5000;
 
-// start server
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on http://localhost:${process.env.PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });

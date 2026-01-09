@@ -15,7 +15,7 @@ const Header = () => {
           <button
             type="button"
             command="show-modal"
-            commandFor="mobile-menu"
+           htmlFor ="mobile-menu"
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400"
           >
             <span className="sr-only">Open main menu</span>
@@ -65,7 +65,7 @@ const Header = () => {
               <button
                 type="button"
                onClick={() => onclose()}
-                commandFor="mobile-menu"
+                htmlFor="mobile-menu"
                 className="-m-2.5 rounded-md p-2.5 text-gray-400"
               >
                 <span className="sr-only">Close menu</span>
