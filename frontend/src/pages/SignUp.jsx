@@ -36,6 +36,7 @@ const registerSchema = z
 const SignUp = () => {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
+  const [serverError, setServerError] = useState("");
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   // ✅ React Hook Form 
@@ -59,8 +60,10 @@ const SignUp = () => {
     
   // ✅ Real submit handler
   const onSubmit = async (data) => {
-     console.log("Form Data Submitted:", data);
+    //  console.log("Form Data Submitted:", data);
+    setServerError("");
     try {
+      
       await registerUser({
         name : data.name,
         email:data.email,
@@ -71,6 +74,7 @@ const SignUp = () => {
       navigate("/otp")
     } catch (error) {
       console.error(error)
+      setServerError(error.message);
     }
   }
 
@@ -123,8 +127,15 @@ const SignUp = () => {
           />
         </div>
         {errors.email && (
-          <p className="text-red-500 text-sm">{errors.email.message}</p>
-        )}
+            <p className="text-red-500 text-sm">
+              {errors.email.message}
+            </p>
+          )}
+          {serverError && (
+            <p className="text-red-600 text-sm">
+              {serverError}
+            </p>
+          )}
 
         {/* Password */}
         <label className="label">Password</label>

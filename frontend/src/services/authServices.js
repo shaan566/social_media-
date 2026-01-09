@@ -5,15 +5,16 @@ import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api/auth"
 
-console.log("Auth API URL:", API_URL)
+// console.log("Auth API URL:", API_URL)
 
 
 export const registerUser = async (userData) => {
-  console.log("Registering user with data:", userData);
+  // console.log("Registering user with data:", userData);
   try {
     
     const response = await axios.post(`${API_URL}/api/auth/signup`, userData);
-    console.log("Register User Response:", response.data);
+    // console.log("Register User Response:", response.data);
+    
     return response.data;
   } catch (error) {
     // fetch style error handling
@@ -26,7 +27,7 @@ export const registerUser = async (userData) => {
     }
 
     if (error.status === 409) {
-      throw new Error("A user with this email already exists.");
+      throw new Error("This email already exists.");
     }
 
     if (error.status >= 500) {

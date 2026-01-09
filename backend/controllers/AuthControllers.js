@@ -76,11 +76,11 @@ export const signup = async (req, res) => {
       ALLOWED_ATTR: [],
     });
 
-    const email = req.body.email
+    const email = req.body.email.toLowerCase().trim();
     const password = req.body.password;
 
     // console.log("Sanitized inputs:", { name, email, password });
-    // ❌ Basic validation
+    //  Basic validation
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
@@ -88,10 +88,10 @@ export const signup = async (req, res) => {
       });
     }
 
-    // ❌ Check existing user
+    // Check existing user
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({
+      return res.status(409).json({
         success: false,
         message: "User with this email already exists",
       });
@@ -104,7 +104,7 @@ export const signup = async (req, res) => {
       password,
     });
 
-    // console.log("User created successfully:", user);
+     console.log("User created successfully:", user.id)
 
     // 🔐 Remove sensitive fields from response
     user.password = undefined;
@@ -125,9 +125,9 @@ export const signup = async (req, res) => {
 
     // Mongo duplicate key
     if (error.code === 11000) {
-      return res.status(400).json({
+      return res.status(409).json({
         success: false,
-        message: "Email already registered",
+        message: `Email already registered`,
       });
     }
 
