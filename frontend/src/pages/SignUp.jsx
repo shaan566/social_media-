@@ -70,6 +70,9 @@ const SignUp = () => {
         password:data.password
       })
       // console.log("Registration successful:", response)
+
+      
+      localStorage.setItem("otpEmail", data.email);
       
       navigate("/otp")
     } catch (error) {

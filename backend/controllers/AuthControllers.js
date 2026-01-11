@@ -8,6 +8,7 @@ import { promisify } from "util"
 import { JSDOM } from "jsdom"
 import createDOMPurify from "isomorphic-dompurify"
 import { genrateOtp } from "../services/otpService.js"
+import { sendEmail } from "../services/emailService.js"
 
 const window = new JSDOM("").window
 const DOMPurify = createDOMPurify(window)
@@ -98,17 +99,35 @@ export const signup = async (req, res) => {
       });
     }
 
+    
+    const Otp = genrateOtp()
+
+    const hashedOtp = crypto
+      .createHash("sha256")
+      .update(Otp)
+      .digest("hex");
     // ✅ Create user (password should be hashed in model)
     const user = await User.create({
       name,
       email,
       password,
+      otp:hashedOtp,
+      otpExpiresAt: Date.now() + 5 * 60 * 1000,
+      isVerified: false,
     });
 
      console.log("User created successfully:", user.id)
 
-    
-
+     await sendEmail({
+      email: email,
+      subject: "Verify your account - OTP",
+      message: `
+        <h2>Welcome to Social media app </h2>
+        <p>Your OTP is:</p>
+        <h1>${Otp}</h1>
+        <p>Valid for 10 minutes</p>
+      `,
+    })
     // 🔐 Remove sensitive fields from response
     user.password = undefined;
 
@@ -158,19 +177,134 @@ export const verfiyOtp = async (req, res) => {
     const {email,Otp} = req.body
 
     if(!email || !Otp){
-      return 
+      return res.status(400).json({
+        success: false,
+        message: "Email and OTP are required"
+      })
     }
 
+    // find the User from the Data Base
+    const user = await User.findOne({ email })
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      })
+    }
 
+    // Check the 
 
-    
+    if(user.isVerified){
+      return res.status(400).json({
+        success:false,
+        message:"User is allready Verified"
 
+      })
+    }
+     // 4️⃣ Check if OTP has expired
+    if (user.otpExpiresAt < Date.now()) {
+      return res.status(400).json({
+        success: false,
+        message: "OTP has expired. Please request a new one.",
+      })
+    }
+
+    const hashedOtp = crypto.createHash("sha256").update(Otp).digest("hex")
+
+    if(hashedOtp !== user.otp){
+      return res.status(400).json({
+        success: false,
+        message:"Invalid OTP"
+      })
+
+    }
+
+    // 6️⃣ OTP is correct → mark user as verified
+    user.emailVerified = true
+    user.otp = null
+    user.otpExpiresAt = null
+    await user.save()
+
+    return res.status(200).json({
+      success: true,
+      message: "OTP verified successfully! Your account is now active.",
+    })   
 
   }
-  catch(err){
-    console.log(err)
+  catch (err) {
+    console.error("OTP verification error:", err)
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong while verifying OTP",
+    })
   }
-
 } 
+
+
+export const resendOtp = async (req, res) => {
+  try {
+    const email = req.body.email?.toLowerCase().trim();
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (user.emailVerified) {
+      return res.status(400).json({
+        success: false,
+        message: "User already verified",
+      });
+    }
+
+    const otp = genrateOtp();
+    const hashedOtp = crypto
+      .createHash("sha256")
+      .update(otp)
+      .digest("hex");
+
+    user.otp = hashedOtp;
+    user.otpAttempts = 0;
+    user.otpExpiresAt = Date.now() + 10 * 60 * 1000;
+    await user.save();
+
+    console.log("Resending OTP to:", email);
+    console.log("OTP:", otp);
+
+    await sendEmail({
+      email,
+      subject: "Resend OTP - Verify your account",
+      message: `
+        <h2>OTP Verification</h2>
+        <p>Your new OTP is:</p>
+        <h1>${otp}</h1>
+        <p>Valid for 10 minutes</p>
+      `,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "OTP resent successfully",
+    });
+  } catch (error) {
+    console.error("Resend OTP error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to resend OTP",
+    });
+  }
+};
+
 
    

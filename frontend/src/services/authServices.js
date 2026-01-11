@@ -1,7 +1,5 @@
-// frontend/src/services/authServices.js
 
-import { verfiyOtp } from "../../../backend/controllers/AuthControllers";
-import { post } from "../utils/apiClient"
+// import { post } from "../utils/apiClient"
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api/auth"
@@ -39,13 +37,42 @@ export const registerUser = async (userData) => {
   }
 };
 
+// Otp verify 
 
-export const Verfiyotp = async(email,Otp) {
-try{
+export const verifyOtp = async (userInfo) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/auth/verfiyOtp`,
+      userInfo
+    );
 
-}
-catch{
-  
-}
+    return response.data;
+  } catch (error) {
+    // Proper error handling
+    const message =
+      error.response?.data?.message ||
+      "OTP verification failed";
 
-}
+    throw new Error(message);
+  }
+};
+
+
+
+export const resendOtp = async ({ email }) => {
+  console.log("email",email)
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/auth/resendOtp`,
+      { email }
+    );
+
+    return response.data;
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      "Failed to resend OTP. Please try again.";
+
+    throw new Error(message);
+  }
+};

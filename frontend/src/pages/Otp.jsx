@@ -1,16 +1,19 @@
 import React, { useState, useRef } from 'react';
 import { AiOutlineGlobal } from 'react-icons/ai';
 import FloatingDecorations from "../common/FloatingDecorations";
-import { Verfiyotp } from '../services/authServices';
+import { verifyOtp , resendOtp } from '../services/authServices';
 
 const OTP = () => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
+  const [error,setError] = useState("");
   const inputRefs = useRef([]);
+
+ const email = localStorage.getItem("otpEmail");
 
   const handleChange = (element, index) => {
     if (isNaN(element.value)) return false;
-
     const newOtp = [...otp];
+
     newOtp[index] = element.value;
     setOtp(newOtp);
 
@@ -19,6 +22,53 @@ const OTP = () => {
       inputRefs.current[index + 1].focus();
     }
   };
+
+  const handleVerifyOtp = async () => {
+  try {
+    setError("");
+
+    if (!email) {
+      return setError("Email not found. Please register again.");
+    }
+
+    const otpValue = otp.join("");
+
+    if (otpValue.length !== 6) {
+      return setError("Please enter complete 6-digit OTP");
+    }
+
+    // ✅ API CALL
+    await verifyOtp({
+      email: email,
+      Otp: otpValue,
+    });
+
+    // ✅ SUCCESS
+    localStorage.removeItem("otpEmail");
+    alert("OTP verified successfully!");
+  } catch (err) {
+    setError(err.message);
+  }
+};
+
+const handleResendOtp = async () => {
+  try {
+    setError("");
+
+    if (!email) {
+      return setError("Email not found. Please signup again.");
+    }
+
+    await resendOtp(email);
+
+    alert("New OTP sent to your email");
+  } catch (err) {
+    setError(err.message);
+  }
+};
+
+
+
 
   const handleKeyDown = (e, index) => {
     // Move to previous input on backspace
@@ -54,10 +104,12 @@ const OTP = () => {
        
          
          <div className="flex justify-start">
-            <button className="text-blue-500 hover:underline">
+            <button
+            onClick = {handleResendOtp}
+             className="text-blue-500 hover:underline">
                 Resend OTP
             </button>
-            </div>
+          </div>
         
       </div>
 
@@ -66,11 +118,18 @@ const OTP = () => {
         {/* <AiOutlineGlobal size={20}/>
         <span className="text-sm">Secure Global Verification</span> */}
             <button 
+            onClick={handleVerifyOtp}
             className='bg-blue-500 h-full w-50 text-white rounded-md p-2 mt-4 text-xl hover:bg-blue-600'
             // onClick={() => navigate('/otp')}
             >
             Validate OTP
             </button>
+
+            {error && (
+              <p className = "text-red-600 text-sm">
+            {error}
+              </p>
+            )}
       
 
       {/* Floating Decorations placeholder */}
