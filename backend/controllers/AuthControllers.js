@@ -7,6 +7,7 @@ import crypto from "crypto"
 import { promisify } from "util"
 import { JSDOM } from "jsdom"
 import createDOMPurify from "isomorphic-dompurify"
+import { genrateOtp } from "../services/otpService.js"
 
 const window = new JSDOM("").window
 const DOMPurify = createDOMPurify(window)
@@ -106,6 +107,8 @@ export const signup = async (req, res) => {
 
      console.log("User created successfully:", user.id)
 
+    
+
     // 🔐 Remove sensitive fields from response
     user.password = undefined;
 
@@ -147,5 +150,27 @@ export const signup = async (req, res) => {
   }
 };
 
+
+export const verfiyOtp = async (req, res) => {
+
+  try{
+
+    const {email,Otp} = req.body
+
+    if(!email || !Otp){
+      return 
+    }
+
+
+
+    
+
+
+  }
+  catch(err){
+    console.log(err)
+  }
+
+} 
 
    

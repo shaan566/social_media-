@@ -33,25 +33,32 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    otp:{
+      type: String,
+      default: null
+    },
+    passwordChangedAt: {
+      type: Date,
+      default: null,
+    },
 
+    lastOtp:{
+      type: Date,
+      default: null
+    },
+    otpExpiresAt:{
+      type: Date,
+      default: null
+    },
+    otpAttempts:{
+      type: Number,
+      default: 0
+    }, 
   
   },
   { timestamps: true }
 );
 
-// /// 🔐 HASH PASSWORD
-// userSchema.pre("save", async function () {
-//   if (!this.isModified("password")) return ();
-
-//   const salt = await bcrypt.genSalt(10);
-//   this.password = await bcrypt.hash(this.password, salt);
-//   ();
-// });
-
-// /// 🔑 COMPARE PASSWORD
-// userSchema.methods.comparePassword = async function (password) {
-//   return bcrypt.compare(password, this.password);
-// };
 
 // Hash password before saving
 userSchema.pre("save", async function () {
@@ -76,6 +83,7 @@ userSchema.pre("save", async function () {
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password)
 }
+
 
 
 const User =  mongoose.model("User", userSchema);

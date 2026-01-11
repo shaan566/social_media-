@@ -1,5 +1,6 @@
 // frontend/src/services/authServices.js
 
+import { verfiyOtp } from "../../../backend/controllers/AuthControllers";
 import { post } from "../utils/apiClient"
 import axios from "axios";
 
@@ -37,3 +38,14 @@ export const registerUser = async (userData) => {
     throw new Error(error.data?.message || "Registration failed. Please try again.");
   }
 };
+
+
+export const Verfiyotp = async(email,Otp) {
+try{
+
+}
+catch{
+  
+}
+
+}

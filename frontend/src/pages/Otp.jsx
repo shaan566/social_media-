@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { AiOutlineGlobal } from 'react-icons/ai';
 import FloatingDecorations from "../common/FloatingDecorations";
+import { Verfiyotp } from '../services/authServices';
 
 const OTP = () => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
