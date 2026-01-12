@@ -8,9 +8,9 @@ const Resetpassworld = () => {
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
 
-    const handleLogin = (e) => {
-        e.preventDefault();
-    }
+    function handleLogin(e) {
+    e.preventDefault();
+  }
   return (
      <div className='flex flex-col items-center py-30 px-20 gap-6'>
           <h1 className='text-black text-3xl '>Reset your password</h1>

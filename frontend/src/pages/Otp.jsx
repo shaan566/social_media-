@@ -2,13 +2,15 @@ import React, { useState, useRef } from 'react';
 import { AiOutlineGlobal } from 'react-icons/ai';
 import FloatingDecorations from "../common/FloatingDecorations";
 import { verifyOtp , resendOtp } from '../services/authServices';
+import { useNavigate } from "react-router-dom";
 
 const OTP = () => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [error,setError] = useState("");
   const inputRefs = useRef([]);
+  const navigate = useNavigate()
+ const [email,setemail] = useState(() => localStorage.getItem("otpEmail"));
 
- const email = localStorage.getItem("otpEmail");
 
   const handleChange = (element, index) => {
     if (isNaN(element.value)) return false;
@@ -23,31 +25,32 @@ const OTP = () => {
     }
   };
 
-  const handleVerifyOtp = async () => {
+ const handleVerifyOtp = async () => {
   try {
     setError("");
 
-    if (!email) {
-      return setError("Email not found. Please register again.");
+    const storedEmail = localStorage.getItem("otpEmail");
+    if (!storedEmail) {
+      return setError("Email not found. Please signup again.");
     }
 
     const otpValue = otp.join("");
-
     if (otpValue.length !== 6) {
       return setError("Please enter complete 6-digit OTP");
     }
 
-    // ✅ API CALL
     await verifyOtp({
-      email: email,
-      Otp: otpValue,
+      email: storedEmail,
+      otp: otpValue,
     });
 
-    // ✅ SUCCESS
     localStorage.removeItem("otpEmail");
+    setemail(null);
     alert("OTP verified successfully!");
+
+    navigate("/dashboard");
   } catch (err) {
-    setError(err.message);
+    setError(err.response?.data?.message || "Invalid OTP");
   }
 };
 
@@ -55,22 +58,20 @@ const handleResendOtp = async () => {
   try {
     setError("");
 
-    if (!email) {
+    const storedEmail = localStorage.getItem("otpEmail");
+    if (!storedEmail) {
       return setError("Email not found. Please signup again.");
     }
 
-    await resendOtp(email);
+    await resendOtp({ email: storedEmail });
 
     alert("New OTP sent to your email");
   } catch (err) {
-    setError(err.message);
+    setError(err.response?.data?.message || "Failed to resend OTP");
   }
 };
 
-
-
-
-  const handleKeyDown = (e, index) => {
+const handleKeyDown = (e, index) => {
     // Move to previous input on backspace
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1].focus();

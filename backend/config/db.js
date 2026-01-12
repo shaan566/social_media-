@@ -10,7 +10,7 @@ const connectDB = async () => {
       // These options are no longer needed in Mongoose 8
     })
 
-    console.log(`MongoDB Connected successfully@`)   
+    console.log(`MongoDB Connected successfully`)   
 
     return conn
   } catch (error) {
