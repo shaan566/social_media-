@@ -3,13 +3,14 @@ import React from 'react'
 import './App.css'
 
 import Hero from './components/home/Hero.jsx'
-import Login from './pages/login.jsx'
-import Resetpassworld from './pages/Resetpassworld.jsx'
+import Login from './pages/auth/login.jsx'
+import Resetpassworld from './pages/auth/Resetpassworld.jsx'
 import ComingSoon from './pages/ComingSoon.jsx'
 import MainLayout from "./layouts/MainLayout";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import SignUp from './pages/SignUp.jsx';
-import Otp from './pages/Otp.jsx';
+import SignUp from './pages/auth/SignUp.jsx';
+import Otp from './pages/auth/Otp.jsx';
+
 
 
 const App = () => {

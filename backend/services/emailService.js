@@ -65,6 +65,7 @@ export const sendEmail = async (options) => {
     })
 
     await transporter.verify()
+    console.log("SMTP Server is ready");
 
     const mailOptions = {
       from: `Social Media app  <${process.env.EMAIL_USER}>`,

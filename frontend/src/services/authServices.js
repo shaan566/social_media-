@@ -40,6 +40,7 @@ export const registerUser = async (userData) => {
 // Otp verify 
 
 export const verifyOtp = async (userInfo) => {
+  console.log("Veriify",userInfo)
   try {
     const response = await axios.post(
       `${API_URL}/api/auth/verfiyOtp`,
@@ -60,7 +61,7 @@ export const verifyOtp = async (userInfo) => {
 
 
 export const resendOtp = async ({ email }) => {
-  console.log("email",email)
+  // console.log("email",email)
   try {
     const response = await axios.post(
       `${API_URL}/api/auth/resendOtp`,
@@ -76,3 +77,66 @@ export const resendOtp = async ({ email }) => {
     throw new Error(message);
   }
 };
+
+export const forgotPassword = async ({ email }) => {
+  console.log("email",email)
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/auth/forgotPassword`,
+      { email }
+    );
+
+    return response.data;
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      "Failed to resend OTP. Please try again.";
+
+    throw new Error(message);
+  }
+};
+
+
+export const resetPassword = async ({ email , password}) => {
+  console.log("email",email)
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/auth/resetPassword`,
+      { email ,password }
+    );
+
+    return response.data;
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      "Failed to resend OTP. Please try again.";
+
+    throw new Error(message);
+  }
+};
+
+export const loginUser = async (credentials) => {
+  console.log("there is past ",credentials)
+  
+  try {
+    const response = await axios.post(`${API_URL}/api/auth/signin`, credentials)
+    return response
+  } catch (error) {
+    // console.error("Login error:", {
+    //   message: error.message,
+    //   status: error.response?.status,
+    //   data: error.response?.data,
+    // })
+
+    // Handle specific error types
+    if (error.response?.status === 401) {
+      throw new Error("Invalid email or password")
+    } else if (error.response?.status >= 500) {
+      throw new Error("Server error. Please try again later.")
+    } else if (error.response?.data?.message) {
+      throw new Error(error.response.data.message)
+    }
+
+    throw new Error("Login failed. Please try again.")
+  }
+}

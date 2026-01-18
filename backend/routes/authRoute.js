@@ -2,7 +2,10 @@ import express from 'express';
 import { 
     signup,
     verfiyOtp,
-    resendOtp
+    resendOtp,
+    forgotPassword,
+    resetPassword,
+    signin
      } from '../controllers/AuthControllers.js';
 
 const router = express.Router();
@@ -11,5 +14,8 @@ const router = express.Router();
 router.post("/signup", signup)
 router.post("/verfiyOtp",verfiyOtp)
 router.post("/resendOtp", resendOtp)
+router.post("/forgotPassword",forgotPassword)
+router.post("/resetPassword",resetPassword)
+router.post("/signin",signin)
 
 export default router;

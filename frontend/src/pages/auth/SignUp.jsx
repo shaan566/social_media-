@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import FloatingDecorations from "../common/FloatingDecorations"
-import { registerUser } from "../services/authServices.js"
+import FloatingDecorations from "./../../common/FloatingDecorations"
+import { registerUser } from "./../../services/authServices"
 
 // ✅ Validation Schema
 const registerSchema = z
