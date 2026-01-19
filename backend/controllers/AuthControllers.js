@@ -415,6 +415,7 @@ export const signin = async (req, res) => {
         message: "Invalid email or password",
       })
     }
+    
 
     // OPTIONAL: email verification check
     if (!user.emailVerified) {
@@ -433,6 +434,7 @@ export const signin = async (req, res) => {
       user,
     })
 
+
   } catch (error) {
     console.error("Signin error:", error)
 
@@ -442,6 +444,7 @@ export const signin = async (req, res) => {
     })
   }
 }
+
 
 
 

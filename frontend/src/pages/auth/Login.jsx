@@ -125,6 +125,18 @@ const Login = () => {
         >
           {isSubmitting ? "Signing in..." : "Sign In"}
         </button>
+        <div className="text-center pt-4">
+                <p className="text-sm text-gray-600">
+                  Don't have an account?{" "}
+                  <Link
+                    to="/signup"
+                    className="font-medium hover:underline"
+                    style={{ color: "#232323" }}
+                  >
+                    Sign up
+                  </Link>
+                </p>
+              </div>
       </form>
 
       <div className="hidden md:block">

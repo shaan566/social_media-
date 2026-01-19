@@ -1,5 +1,8 @@
 {
-    "recommendations": [
-        "formulahendry.auto-rename-tag"
-    ]
+  "recommendations": [
+    "formulahendry.auto-rename-tag",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",   // Added this
+    "usernamehw.errorlens"      // Added this
+  ]
 }

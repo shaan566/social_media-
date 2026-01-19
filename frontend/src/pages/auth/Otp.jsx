@@ -9,8 +9,9 @@ const OTP = () => {
   const [error,setError] = useState("");
   const inputRefs = useRef([]);
   const navigate = useNavigate()
+  const [isloading,setisloading] = useState(false)
   
- const [email,setemail] = useState(() => localStorage.getItem("otpEmail"));
+ const [setemail] = useState(() => localStorage.getItem("otpEmail"));
 
 
 
@@ -28,36 +29,40 @@ const OTP = () => {
   };
 
  const handleVerifyOtp = async () => {
+  setError("");
+
+  const storedEmail = localStorage.getItem("otpEmail");
+  if (!storedEmail) {
+    return setError("Email not found. Please signup again.");
+  }
+
+  const otpValue = otp.join("");
+  if (otpValue.length !== 6) {
+    return setError("Please enter complete 6-digit OTP");
+  }
+
   try {
-    
-    setError("");   
+    setisloading(true); // ✅ ONLY before API call
 
-    const storedEmail = localStorage.getItem("otpEmail");
-    if (!storedEmail) {
-      return setError("Email not found. Please signup again.");
-    }
-
-    const otpValue = otp.join("");
-    // console.log("otp",otpValue)
-    if (otpValue.length !== 6) {
-      return setError("Please enter complete 6-digit OTP");
-    }
-
-    const responce =await verifyOtp({
+    await verifyOtp({
       email: storedEmail,
       otp: otpValue,
     });
 
-    console.log("ss",responce)
     localStorage.removeItem("otpEmail");
     setemail(null);
+
     alert("OTP verified successfully!");
 
+    setisloading(false); // ✅ STOP before navigation
     navigate("/dashboard");
+
   } catch (err) {
     setError(err.response?.data?.message || "Invalid OTP");
+    setisloading(false);
   }
 };
+
 //  console.log("OTP array:", otp);
 // console.log("OTP string:", otp.join(""));
 
@@ -135,11 +140,12 @@ const handleKeyDown = (e, index) => {
         {/* <AiOutlineGlobal size={20}/>
         <span className="text-sm">Secure Global Verification</span> */}
             <button 
+            disabled = {isloading}
             onClick={handleVerifyOtp}
-            className='bg-blue-500 h-full w-50 text-white rounded-md p-2 mt-4 text-xl hover:bg-blue-600'
-            // onClick={() => navigate('/otp')}
+            className={`bg-blue-500 h-full w-50 text-white rounded-md p-2 mt-4 text-xl
+            ${isloading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"}`}
             >
-            Validate OTP
+            {isloading ? "Validating..." : "Validate OTP" }
             </button>
 
             {error && (

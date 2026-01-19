@@ -14,7 +14,7 @@ const Resetpassworld = () => {
     const [step , setstep] = useState(1)
     const [otp,setotp] = useState(new Array(6).fill(""))
     const inputRefs = useRef([])
-    const [password,setpassword] = useState("")
+    const [isloading, setisloading] = useState(true)
     const navigate = useNavigate();
     const [newPassword, setNewPassword] = useState("");
 const [confirmPassword, setConfirmPassword] = useState("");
@@ -50,6 +50,7 @@ const handleKeyDown = (e, index) => {
   try {
     seterror("");
 
+    setisloading(true)
     if (!email) {
       return seterror("Please enter your email");
     }
@@ -66,6 +67,9 @@ const handleKeyDown = (e, index) => {
     console.log(err);
     seterror(err.response?.data?.message || "Something went wrong");
   }
+   finally{
+    setisloading(false)
+  }
 };
 
 const handleVerifyOtp = async () => {
@@ -73,6 +77,7 @@ const handleVerifyOtp = async () => {
   try{
 
     seterror("")
+    setisloading(true)
 
     if(!otp) return seterror("Please Enter OTP ")
 
@@ -89,12 +94,15 @@ const handleVerifyOtp = async () => {
   }catch(err){
     console.log(err)
      seterror(err.response?.data?.message || "Invalid OTP")
+  }finally{
+    setisloading(false)
   }
 }
 
 const handleResetPassword = async () => {
   try {
     seterror("");
+    setisloading(true)
 
     if (!newPassword || !confirmPassword) {
       return seterror("Both password fields are required");
@@ -116,12 +124,16 @@ const handleResetPassword = async () => {
     console.log(err);
     seterror(err.response?.data?.message || "Password reset failed");
   }
+  finally{
+    setisloading(false)
+  }
 };
 
 const handleResendOtp = async () => {
   try {
     seterror("");
 
+    
     const storedEmail = localStorage.getItem("otpEmail");
     if (!storedEmail) return seterror("Email not found. Please signup again.");
 
@@ -141,6 +153,7 @@ const handleResendOtp = async () => {
   } catch (err) {
     seterror(err.response?.data?.message || "Failed to resend OTP");
   }
+  
 };
 
 
@@ -183,11 +196,14 @@ return (
               />
             </div>
 
-            <button
-              className="bg-blue-500 text-white rounded-md p-2 mt-2 hover:bg-blue-600"
+            <button 
+            className={`bg-blue-500 h-full w-50 text-white rounded-md p-2 mt-4 text-xl
+            ${isloading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"}`}
+              diabled = {isloading}
               onClick={handleSendotp}
             >
-              Send OTP
+              {isloading ? "Sending" : "Send OTP"}
+              
             </button>
           </>
         )}
@@ -234,12 +250,14 @@ return (
                   </button>
                 </div>
 
-                <button
-                  onClick={handleVerifyOtp}
-                  className="bg-blue-500 text-white rounded-md p-2 mt-4 text-lg hover:bg-blue-600 w-full"
-                >
-                  Validate OTP
-                </button>
+                <button 
+            disabled = {isloading}
+            onClick={handleVerifyOtp}
+            className={`bg-blue-500 h-full w-50 text-white rounded-md p-2 mt-4 text-xl
+            ${isloading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"}`}
+            >
+            {isloading ? "Validating..." : "Validate OTP" }
+            </button>
 
                 {error && (
                   <p className="text-red-600 text-sm text-center">
@@ -305,10 +323,12 @@ return (
             )}
 
             <button
-              className="bg-green-500 text-white rounded-md p-2 mt-4 hover:bg-green-600 w-full"
+            diabled = {setisloading}
+              className={`bg-blue-500 h-full w-50 text-white rounded-md p-2 mt-4 text-xl
+            ${isloading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"}`}
               onClick={handleResetPassword}
             >
-              Reset Password
+              {isloading ? "loading..." : "Conform"}
             </button>
           </>
         )}
