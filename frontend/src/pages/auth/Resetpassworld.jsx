@@ -14,7 +14,7 @@ const Resetpassworld = () => {
     const [step , setstep] = useState(1)
     const [otp,setotp] = useState(new Array(6).fill(""))
     const inputRefs = useRef([])
-    const [isloading, setisloading] = useState(true)
+    const [isloading, setisloading] = useState(false)
     const navigate = useNavigate();
     const [newPassword, setNewPassword] = useState("");
 const [confirmPassword, setConfirmPassword] = useState("");
@@ -181,7 +181,7 @@ return (
         {/* STEP 1 – EMAIL */}
         {step === 1 && (
           <>
-            <label className="text-black text-lg font-medium">Email</label>
+            <label className="label">Email</label>
             <div className="relative">
               <MdOutlineMailOutline
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600"
@@ -197,12 +197,12 @@ return (
             </div>
 
             <button 
-            className={`bg-blue-500 h-full w-50 text-white rounded-md p-2 mt-4 text-xl
+            className={`bg-blue-500 h-full w-full text-white rounded-md p-2 mt-4 text-xl
             ${isloading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"}`}
               diabled = {isloading}
               onClick={handleSendotp}
             >
-              {isloading ? "Sending" : "Send OTP"}
+              {isloading ? "Sending..." : "Send OTP"}
               
             </button>
           </>
@@ -213,14 +213,14 @@ return (
           <>
             {step === 2 && (
               <div className="flex flex-col items-center gap-6">
-
+{/* 
                 <h1 className="text-black text-3xl font-semibold">
                   Enter OTP
-                </h1>
+                </h1> */}
 
-                <p className="text-gray-600 text-center max-w-sm">
+                {/* <p className="text-gray-600 text-center max-w-sm">
                   Please enter the One-Time Password (OTP) sent to your email address.
-                </p>
+                </p> */}
 
                 <div className="flex flex-col gap-4 items-center">
                   <label className="text-black text-lg font-medium">
@@ -244,7 +244,7 @@ return (
 
                   <button
                     onClick={handleResendOtp}
-                    className="text-blue-500 hover:underline self-start"
+                    className="text-blue-500 hover:underline self-end"
                   >
                     Resend OTP
                   </button>
@@ -272,13 +272,13 @@ return (
         {/* STEP 3 – PASSWORD */}
        {step === 3 && (
           <>
-            <h1 className="text-black text-3xl font-semibold">
+            {/* <h1 className="text-black text-3xl font-semibold">
               Reset Password
             </h1>
 
             <p className="text-gray-600 text-center">
               Enter your new password and confirm it below.
-            </p>
+            </p> */}
 
             {/* New Password */}
             <label className="label">New Password</label>
@@ -324,11 +324,11 @@ return (
 
             <button
             diabled = {setisloading}
-              className={`bg-blue-500 h-full w-50 text-white rounded-md p-2 mt-4 text-xl
+              className={`bg-blue-500 h-full w-full text-white rounded-md p-2 mt-4 text-xl
             ${isloading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"}`}
               onClick={handleResetPassword}
             >
-              {isloading ? "loading..." : "Conform"}
+              {isloading ? "Verifying OTP..." : "Confirm OTP"}
             </button>
           </>
         )}

@@ -1,21 +1,40 @@
 import express from 'express';
 import { 
     signup,
-    verfiyOtp,
+    verifyOtp,
     resendOtp,
     forgotPassword,
     resetPassword,
-    signin
-     } from '../controllers/AuthControllers.js';
+    signin,
+    otpLimiter,
+    refreshToken,
+    logout
+} from '../controllers/AuthControllers.js';
+
+import { protect } from "../middleware/authMiddleware.js"
+
+import {
+  registerSchema,
+  loginSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} from "../utils/validationSchemas.js"
 
 const router = express.Router();
 
-// User Registration Route
-router.post("/signup", signup)
-router.post("/verfiyOtp",verfiyOtp)
-router.post("/resendOtp", resendOtp)
-router.post("/forgotPassword",forgotPassword)
-router.post("/resetPassword",resetPassword)
-router.post("/signin",signin)
+// --- Public Routes ---
+router.post("/signup", validateRequest(registerSchema) ,signup);
+router.post("/signin", validateRequest(loginSchema) , signin);
+router.post("/verifyOtp", otpLimiter, verifyOtp);
+router.post("/resendOtp", otpLimiter, resendOtp);
+router.post("/forgotPassword",validateRequest(forgotPasswordSchema), otpLimiter, forgotPassword);
+router.post("/resetPassword", validateRequest(resetPasswordSchema), otpLimiter, resetPassword);
+
+// --- Token Management ---
+// Fixed the path and kept it public because it handles its own logic
+router.post("/refreshToken", refreshToken); 
+
+// --- Protected Routes ---
+router.post("/logout", protect, logout);
 
 export default router;

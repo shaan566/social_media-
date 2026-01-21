@@ -43,7 +43,7 @@ export const verifyOtp = async (userInfo) => {
   console.log("Veriify",userInfo)
   try {
     const response = await axios.post(
-      `${API_URL}/api/auth/verfiyOtp`,
+      `${API_URL}/api/auth/verifyOtp`,
       userInfo
     );
 
@@ -57,6 +57,16 @@ export const verifyOtp = async (userInfo) => {
     throw new Error(message);
   }
 };
+
+
+export const logoutUser = async () => {
+  try {
+    return await axios.post(`${API_URL}/api/auth/logout`, {})
+  } catch (error) {
+    error.message
+    throw error
+  }
+}
 
 
 

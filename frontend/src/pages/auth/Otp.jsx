@@ -49,10 +49,12 @@ const OTP = () => {
       otp: otpValue,
     });
 
-    localStorage.removeItem("otpEmail");
-    setemail(null);
+   
 
     alert("OTP verified successfully!");
+
+     localStorage.removeItem("otpEmail");
+    setemail(null);
 
     setisloading(false); // ✅ STOP before navigation
     navigate("/dashboard");

@@ -9,6 +9,7 @@ import { JSDOM } from "jsdom"
 import createDOMPurify from "isomorphic-dompurify"
 import { genrateOtp } from "../services/otpService.js"
 import { sendEmail } from "../services/emailService.js"
+import AUTH_CONFIG from "../config/auth.config.js"
 
 const window = new JSDOM("").window
 const DOMPurify = createDOMPurify(window)
@@ -65,6 +66,228 @@ const setAuthCookies = (res, token, refreshToken) => {
     ...cookieOptions,
     maxAge: AUTH_CONFIG.REFRESH_TOKEN_COOKIE_EXPIRES_IN_MS, // Use centralized config
   })
+}
+
+// Refresh access token (Example - can be added as a new route)
+// ISSUE 6.5 FIX: Enhanced to support guest token refresh
+export const refreshToken = async (req, res) => {
+  const { refreshToken: requestRefreshToken, token: currentToken } = req.cookies
+
+  // ISSUE 6.5 FIX: Check if this is a guest user trying to refresh
+  if (!requestRefreshToken && currentToken) {
+    try {
+      const decoded = await promisify(jwt.verify)(currentToken, process.env.JWT_SECRET)
+
+      // If it's a guest user, refresh their token
+      if (decoded.isGuest || decoded.id === process.env.GUEST_USER_ID) {
+        console.log("[refreshToken] Refreshing guest token")
+
+        // Generate new guest token with same data
+        const guestPayload = {
+          id: decoded.id,
+          sessionId: decoded.sessionId,
+          isGuest: true,
+        }
+
+        const newGuestToken = jwt.sign(guestPayload, process.env.JWT_SECRET, {
+          expiresIn: process.env.GUEST_SESSION_DURATION || "24h",
+        })
+
+        // Set new guest token cookie
+        // const isProduction = process.env.NODE_ENV === "production"
+        // res.cookie("token", newGuestToken, {
+        //   httpOnly: true,
+        //   secure: isProduction,
+        //   sameSite: isProduction ? "none" : "lax",
+        //   maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        //   path: "/",
+        // })
+
+        return res.status(200).json({
+          success: true,
+          message: "Guest token refreshed successfully.",
+          isGuest: true,
+        })
+      }
+    } catch (tokenError) {
+      console.error("[refreshToken] Guest token refresh failed:", tokenError.message)
+      // Fall through to regular error handling
+    }
+  }
+
+  if (!requestRefreshToken) {
+    return res
+      .status(401)
+      .json({ success: false, message: "Refresh token not found." })
+  }
+
+  try {
+    const storedToken = await Token.findOne({
+      token: requestRefreshToken,
+      type: "refresh",
+    })
+
+    if (!storedToken || storedToken.expiresAt < new Date()) {
+      await Token.deleteOne({ token: requestRefreshToken, type: "refresh" }) // Clean up expired/invalid token
+      // Clear cookies as refresh token is invalid
+      res.cookie("token", "", {
+        httpOnly: true,
+        expires: new Date(0),
+        sameSite: "Strict",
+        secure: process.env.NODE_ENV === "production",
+      })
+      res.cookie("refreshToken", "", {
+        httpOnly: true,
+        expires: new Date(0),
+        sameSite: "Strict",
+        secure: process.env.NODE_ENV === "production",
+      })
+      return res.status(403).json({
+        success: false,
+        message: "Refresh token invalid or expired. Please log in again.",
+      })
+    }
+
+    // Generate new access token
+    const newAccessToken = genrateToken(storedToken.userId)
+
+    // Implement token rotation: generate new refresh token and invalidate old one
+    const newRefreshToken = await generateAndSaveRefreshToken(storedToken.userId)
+
+    // Delete the old refresh token from database
+    await Token.deleteOne({ token: requestRefreshToken, type: 'refresh' })
+
+    // Set both new access token and new refresh token cookies
+    // const isProduction = process.env.NODE_ENV === "production"
+    // const cookieOptions = {
+    //   httpOnly: true,
+    //   secure: isProduction,
+    //   sameSite: isProduction ? "none" : "lax",
+    //   path: "/",
+    // }
+
+    res.cookie("token", newAccessToken, {
+      ...cookieOptions,
+      maxAge: parseInt(process.env.JWT_COOKIE_EXPIRES_IN_MS || 10 * 60 * 1000), // 10 mins
+    })
+
+    res.cookie("refreshToken", newRefreshToken, {
+      ...cookieOptions,
+      maxAge: parseInt(process.env.REFRESH_TOKEN_COOKIE_EXPIRES_IN_MS || 7 * 24 * 60 * 60 * 1000), // 7 days
+    })
+
+    // PHASE 1: Return user data with successful refresh (Issue #2 fix)
+    // This allows client to restore full session state after token refresh
+    const user = await User.findById(storedToken.userId).select("-password")
+
+    if (user) {
+      // Sanitize user data
+      user.name = DOMPurify.sanitize(user.name, {
+        ALLOWED_TAGS: [],
+        ALLOWED_ATTR: [],
+        KEEP_CONTENT: true,
+      })
+      if (user.bio)
+        user.bio = DOMPurify.sanitize(user.bio, {
+          USE_PROFILES: { html: true },
+        })
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Token refreshed successfully.",
+      data: user
+        ? {
+          user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            emailVerified: user.emailVerified,
+           
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+          },
+        }
+        : undefined,
+    })
+  } catch (error) {
+    console.error("Error refreshing token:", error)
+    res
+      .status(500)
+      .json({ success: false, message: "Could not refresh token." })
+  }
+}
+
+// BROWSER CLOSE DETECTION: Enhanced logout - Supports sendBeacon API calls
+// This ensures clean logout when switching accounts AND when browser closes
+export const logout = async (req, res) => {
+  try {
+    const { refreshToken: requestRefreshToken } = req.cookies
+
+    // BROWSER CLOSE: Log the reason for logout (for debugging/analytics)
+    let logoutReason = 'user_action'
+    try {
+      // Handle sendBeacon data (sent as text/plain or FormData)
+      if (req.body && req.body.reason) {
+        logoutReason = req.body.reason
+      } else if (req.body && typeof req.body === 'string') {
+        // Parse text/plain data from sendBeacon
+        const parsed = JSON.parse(req.body)
+        logoutReason = parsed.reason || 'user_action'
+      }
+    } catch (parseError) {
+      // Ignore parse errors - reason is just for logging
+    }
+
+    console.log(`[logout] Logout triggered - Reason: ${logoutReason}`)
+
+    // Delete ALL refresh tokens for this user (not just current one)
+    // This prevents issues when switching accounts
+    if (req.user && req.user._id) {
+      const result = await Token.deleteMany({
+        userId: req.user._id,
+        type: "refresh",
+      })
+      console.log(`[logout] Deleted ${result.deletedCount} refresh tokens for user ${req.user._id}`)
+    } else if (requestRefreshToken) {
+      // Fallback: if user not available, delete just the current token
+      await Token.deleteOne({ token: requestRefreshToken, type: "refresh" })
+    }
+
+    // Clear cookies with proper settings
+    const cookieOptions = {
+      httpOnly: true,
+      expires: new Date(0),
+      sameSite: process.env.COOKIE_SAME_SITE || "Strict",
+      secure: process.env.COOKIE_SECURE === "true" || process.env.NODE_ENV === "production",
+      path: "/",
+    }
+
+    res.cookie("token", "", cookieOptions)
+    res.cookie("refreshToken", "", cookieOptions)
+
+    res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+      reason: logoutReason,
+      timestamp: new Date().toISOString(),
+    })
+  } catch (error) {
+    console.error("Logout error:", error)
+    // Even if DB operation fails, still attempt to clear cookies as a best effort
+    const cookieOptions = {
+      httpOnly: true,
+      expires: new Date(0),
+      sameSite: process.env.COOKIE_SAME_SITE || "Strict",
+      secure: process.env.COOKIE_SECURE === "true" || process.env.NODE_ENV === "production",
+      path: "/",
+    }
+
+    res.cookie("token", "", cookieOptions)
+    res.cookie("refreshToken", "", cookieOptions)
+
+    res.status(500).json({ success: false, message: "Error logging out" })
+  }
 }
 
 
@@ -170,10 +393,11 @@ export const signup = async (req, res) => {
 };
 
 
-export const verfiyOtp = async (req, res) => {
+export const verifyOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
 
+    console.log("Request Body", req.body)
     if (!email || !otp) {
       return res.status(400).json({
         success: false,
@@ -212,6 +436,8 @@ export const verfiyOtp = async (req, res) => {
       .update(otp.toString().trim())
       .digest("hex");
 
+    console.log("that is OTP ",hashedOtp)
+    console.log("that is user OTP ", user.otp)
     if (hashedOtp !== user.otp) {
       return res.status(400).json({
         success: false,
@@ -222,6 +448,7 @@ export const verfiyOtp = async (req, res) => {
     // ✅ OTP VERIFIED (FOR PASSWORD RESET)
     user.otp = null;
     user.otpExpiresAt = null;
+    user.emailVerified = true;
     await user.save();
 
     return res.status(200).json({
@@ -386,12 +613,15 @@ export const resetPassword = async (req, res) => {
     // 5️⃣ Mark email verified (optional but recommended)
     user.emailVerified = true;
 
+   
     // 6️⃣ Save user
     await user.save(); // 🔥 password auto-hashed here
 
+    await Token.deleteMany({ userId: user._id })
+
     return res.status(200).json({
       success: true,
-      message: "Password reset successful",
+      message: "Password reset successful, Please login again.",
     });
 
   } catch (err) {
@@ -425,15 +655,22 @@ export const signin = async (req, res) => {
       })
     }
 
+    const token = genrateToken(user._id)
+    const refreshToken = await generateAndSaveRefreshToken(user._id)
+
+    setAuthCookies(res, token, refreshToken)
+
+
     user.password = undefined
 
     // ✅ VERY IMPORTANT
     return res.status(200).json({
       success: true,
       message: "Login successful",
-      user,
+      data: {user},
     })
 
+    
 
   } catch (error) {
     console.error("Signin error:", error)
@@ -445,6 +682,15 @@ export const signin = async (req, res) => {
   }
 }
 
+
+export const otpLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: {
+    success: false,
+    message: "Too many attempts. Try again later."
+  }
+});
 
 
 
