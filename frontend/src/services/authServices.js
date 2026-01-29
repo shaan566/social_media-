@@ -140,7 +140,7 @@ export const loginUser = async (credentials) => {
 
     // Handle specific error types
     if (error.response?.status === 401) {
-      throw new Error("Invalid email or password")
+      throw new Error("Invalid password")
     } else if (error.response?.status >= 500) {
       throw new Error("Server error. Please try again later.")
     } else if (error.response?.data?.message) {

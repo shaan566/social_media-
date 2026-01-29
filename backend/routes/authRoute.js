@@ -8,17 +8,21 @@ import {
     signin,
     otpLimiter,
     refreshToken,
-    logout
+    logout,
+    getMe 
 } from '../controllers/AuthControllers.js';
 
-import { protect } from "../middleware/authMiddleware.js"
+import { protect ,updateSessionActivity } from "../middleware/authMiddleware.js"
 
 import {
   registerSchema,
   loginSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
+
+
 } from "../utils/validationSchemas.js"
+import { validateRequest  } from "../middleware/validateRequest.js"
 
 const router = express.Router();
 
@@ -35,6 +39,9 @@ router.post("/resetPassword", validateRequest(resetPasswordSchema), otpLimiter, 
 router.post("/refreshToken", refreshToken); 
 
 // --- Protected Routes ---
-router.post("/logout", protect, logout);
+router.post("/logout", protect, updateSessionActivity, logout);
+
+
+router.get("/getme",protect,updateSessionActivity,getMe )
 
 export default router;

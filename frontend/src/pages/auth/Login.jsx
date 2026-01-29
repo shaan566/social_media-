@@ -36,7 +36,7 @@ const Login = () => {
       alert("You are login user")
       navigate("/dashboard")
     } catch (err) {
-      setServerError(err.message || "Invalid email or password")
+      setServerError(err.message)
     }
   }
 

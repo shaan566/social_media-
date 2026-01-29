@@ -1,8 +1,8 @@
-import jwt from "jsonwebtoken"
+
 
 import Token from "../models/tokenModel.js"
 
-import { websocketService } from "../services/websocketService.js"
+
 
 /**
  * Middleware to protect routes that require authentication.

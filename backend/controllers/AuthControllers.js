@@ -14,6 +14,7 @@ import AUTH_CONFIG from "../config/auth.config.js"
 const window = new JSDOM("").window
 const DOMPurify = createDOMPurify(window)
 import rateLimit from 'express-rate-limit';
+import { email, success } from 'zod';
 
 
 const genrateToken = (userId) => {
@@ -203,7 +204,6 @@ export const refreshToken = async (req, res) => {
             name: user.name,
             email: user.email,
             emailVerified: user.emailVerified,
-           
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
           },
@@ -376,7 +376,7 @@ export const signup = async (req, res) => {
       });
     }
 
-    // Mongoose validation errors
+    // Mongooie validation error
     if (error.name === "ValidationError") {
       const messages = Object.values(error.errors).map((e) => e.message);
       return res.status(400).json({
@@ -505,7 +505,7 @@ export const resendOtp = async (req, res) => {
     await user.save();
 
     // console.log("Resending OTP to:", email);
-    // console.log("OTP:", otp);
+    console.log("OTP:", otp);
 
     await sendEmail({
       email,
@@ -578,7 +578,45 @@ export const forgotPassword = async (req, res) => {
     return res.status(500).json({ success: false, message: "Failed to send OTP" })
   }
 }
-   
+
+export const getMe = async(req, res) =>{
+  try{
+
+    if(!req.user){
+      return res.status(401).json({
+        success: false,
+        message: "Not authenticated"
+      })
+    }
+
+    const user = req.user
+
+    if(!user){
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      })
+    }
+
+    const userinfo = {
+      _id : user.id,
+      name : user.name,
+      email : user.email,
+      emailVerified : user.emailVerified
+    }
+
+    res.status(200).json({
+      success: true,
+      data :  { user : userinfo},
+    })
+
+  }catch(err){
+    console.log("getME error", err)
+
+  }
+}
+
+
 
 
 export const resetPassword = async (req, res) => {
@@ -642,10 +680,9 @@ export const signin = async (req, res) => {
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({
         success: false,
-        message: "Invalid email or password",
+        message: "Invalid Password",
       })
-    }
-    
+    }    
 
     // OPTIONAL: email verification check
     if (!user.emailVerified) {
@@ -660,7 +697,6 @@ export const signin = async (req, res) => {
 
     setAuthCookies(res, token, refreshToken)
 
-
     user.password = undefined
 
     // ✅ VERY IMPORTANT
@@ -669,8 +705,6 @@ export const signin = async (req, res) => {
       message: "Login successful",
       data: {user},
     })
-
-    
 
   } catch (error) {
     console.error("Signin error:", error)

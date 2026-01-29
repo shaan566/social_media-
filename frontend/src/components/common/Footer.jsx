@@ -69,8 +69,11 @@ const Footer = () => {
                 </div>
             </div>
             <p className="pt-4 text-center  text-white text-xs md:text-m pb-5">
-                {new Date().getFullYear()} All Right Reserved.
+                 Made in India ❤️ <br/>
+                 {new Date().getFullYear()} All Right Reserved.
+
             </p>
+            
         </footer>
     </div>
   )
