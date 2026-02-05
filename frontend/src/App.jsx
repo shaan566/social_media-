@@ -5,7 +5,7 @@ import './App.css'
 import Hero from './components/home/Hero.jsx'
 import Login from './pages/auth/Login.jsx'
 import Resetpassworld from './pages/auth/Resetpassworld.jsx'
-import ComingSoon from './pages/ComingSoon.jsx'
+import ComingSoon from './components/common/ComingSoon.jsx'
 import MainLayout from "./layouts/MainLayout";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SignUp from './pages/auth/SignUp.jsx';
