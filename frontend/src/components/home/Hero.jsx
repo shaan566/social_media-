@@ -94,22 +94,21 @@ const Hero = () => {
         </div>
       </div>
 
-        <div className="relative flex justify-center items-center overflow-hidden">
+        <div className="relative mx-auto flex justify-center items-center overflow-hidden">
 
           {/* Left outer (desktop only) */}
           <img
             src={img2}
-            className="absolute left-30 top-1/2 -translate-y-1/2 w-56 hidden lg:block z-[6]"
+            className="absolute left-30 top-1/2 -translate-y-1/2 w-56 hidden lg:block z-[6] "
             alt=""
-          />
+          />        
 
           {/* Left inner (tablet+) */}
           <img
             src={img6}
-            className="absolute left-[22%] top-1/2 -translate-y-1/2 w-64 hidden md:block z-[7]"
+            className="absolute left-[14%] sm:left-[18%] md:left-[22%] top-1/2 -translate-y-1/2 w-64 hidden md:block z-[7]"
             alt=""
           />
-
           {/* Center main (always visible) */}
           <img
             src={img1}
@@ -120,16 +119,22 @@ const Hero = () => {
           {/* Right inner (tablet+) */}
           <img
             src={img3}
-            className="absolute right-[22%] top-1/2 -translate-y-1/2 w-64 hidden md:block z-[7]"
+            className="absolute right-[14%] sm:right-[18%] md:right-[22%] top-1/2 -translate-y-1/2 w-64 hidden md:block z-[7]"
             alt=""
           />
 
+          
           {/* Right outer (desktop only) */}
           <img
             src={img4}
             className="absolute right-30 top-1/2 -translate-y-1/2 w-56 hidden lg:block z-[6]"
             alt=""
           />
+        </div>
+        <div className='h-30 w-20 justify-center items-center rounded-2xl border boder-gray-800' >
+        <span className='text-black text-2xl'>
+          Connect your favorite accounts
+        </span>
 
         </div>
 
