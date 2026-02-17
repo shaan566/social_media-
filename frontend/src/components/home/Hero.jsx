@@ -94,49 +94,70 @@ const Hero = () => {
         </div>
       </div>
 
-        <div className="relative mx-auto flex justify-center items-center overflow-hidden">
+ <div className="relative mx-auto max-w-7xl px-10 md:px-20 py-24">
+  <div className="relative flex items-center justify-center">
 
-          {/* Left outer (desktop only) */}
-          <img
-            src={img2}
-            className="absolute left-30 top-1/2 -translate-y-1/2 w-56 hidden lg:block z-[6] "
-            alt=""
-          />        
+    {/* LEFT OUTER */}
+    <div className="absolute -left-[30%] hidden lg:block z-[6]">
+      <div className="relative max-w-[364px]">
+        <img
+          src={img2}
+          className="w-full h-auto block"
+          alt=""
+        />
+      </div>
+    </div>
 
-          {/* Left inner (tablet+) */}
-          <img
-            src={img6}
-            className="absolute left-[14%] sm:left-[18%] md:left-[22%] top-1/2 -translate-y-1/2 w-64 hidden md:block z-[7]"
-            alt=""
-          />
-          {/* Center main (always visible) */}
-          <img
-            src={img1}
-            className="relative w-80 md:w-85 z-10"
-            alt=""
-          />
+    {/* LEFT INNER */}
+    <div className="absolute -left-[8%] hidden md:block z-[7]">
+      <div className="relative max-w-[428px]">
+        <img
+          src={img6}
+          className="w-full h-auto block"
+          alt=""
+        />
+      </div>
+    </div>
 
-          {/* Right inner (tablet+) */}
-          <img
-            src={img3}
-            className="absolute right-[14%] sm:right-[18%] md:right-[22%] top-1/2 -translate-y-1/2 w-64 hidden md:block z-[7]"
-            alt=""
-          />
+    {/* CENTER (Biggest) */}
+    <div className="relative z-10">
+      <div className="relative max-w-[520px] sm:max-w-[600px]">
+        <img
+          src={img1}
+          className="w-full h-auto block"
+          alt=""
+        />
+      </div>
+    </div>
 
-          
-          {/* Right outer (desktop only) */}
-          <img
-            src={img4}
-            className="absolute right-30 top-1/2 -translate-y-1/2 w-56 hidden lg:block z-[6]"
-            alt=""
-          />
-        </div>
-        <div className='h-30 w-20 justify-center items-center rounded-2xl border boder-gray-800' >
-        <span className='text-black text-2xl'>
-          Connect your favorite accounts
-        </span>
+    {/* RIGHT INNER */}
+    <div className="absolute -right-[8%] hidden md:block z-[7]">
+      <div className="relative max-w-[428px]">
+        <img
+          src={img3}
+          className="w-full h-auto block"
+          alt=""
+        />
+      </div>
+    </div>
 
-        </div>
+    {/* RIGHT OUTER */}
+    <div className="absolute -right-[30%] hidden lg:block z-[6]">
+      <div className="relative max-w-[364px]">
+        <img
+          src={img4}
+          className="w-full h-auto block"
+          alt=""
+        />
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+       
 
 
     
