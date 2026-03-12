@@ -94,68 +94,75 @@ const Hero = () => {
         </div>
       </div>
 
- <div className="relative mx-auto max-w-7xl px-10 md:px-20 py-24">
-  <div className="relative flex items-center justify-center">
+ <div className="relative mx-auto max-w-7xl px-4 sm:px-8 md:px-12 lg:px-20 py-16 sm:py-20 md:py-24 overflow-hidden">
+  
+  {/* Mobile & Tablet: Stacked/scrollable row */}
+  <div className="flex items-center justify-center gap-3 sm:gap-4 md:hidden">
+    <div className="w-1/3 max-w-[140px]">
+      <img src={img2} className="w-full h-auto block rounded-xl shadow-md" alt="" />
+    </div>
+    <div className="w-1/3 max-w-[160px] -mt-4">
+      <img src={img6} className="w-full h-auto block rounded-xl shadow-md" alt="" />
+    </div>
+    <div className="w-1/3 max-w-[180px] -mt-8">
+      <img src={img1} className="w-full h-auto block rounded-xl shadow-lg" alt="" />
+    </div>
+    <div className="w-1/3 max-w-[160px] -mt-4">
+      <img src={img3} className="w-full h-auto block rounded-xl shadow-md" alt="" />
+    </div>
+    <div className="w-1/3 max-w-[140px]">
+      <img src={img4} className="w-full h-auto block rounded-xl shadow-md" alt="" />
+    </div>
+  </div>
+
+  {/* md: 3-card layout */}
+  <div className="hidden md:flex lg:hidden items-end justify-center gap-0">
+    {/* Left */}
+    <div className="relative z-[6] w-[28%] max-w-[220px] translate-x-6 translate-y-4">
+      <img src={img6} className="w-full h-auto block rounded-2xl shadow-lg" alt="" />
+    </div>
+
+    {/* Center */}
+    <div className="relative z-10 w-[44%] max-w-[340px]">
+      <img src={img1} className="w-full h-auto block rounded-2xl shadow-2xl" alt="" />
+    </div>
+
+    {/* Right */}
+    <div className="relative z-[6] w-[28%] max-w-[220px] -translate-x-6 translate-y-4">
+      <img src={img3} className="w-full h-auto block rounded-2xl shadow-lg" alt="" />
+    </div>
+  </div>
+
+  {/* lg+: Full 5-card fan layout */}
+  <div className="hidden lg:block relative h-[520px] xl:h-[580px]">
 
     {/* LEFT OUTER */}
-    <div className="absolute -left-[30%] hidden lg:block z-[6]">
-      <div className="relative max-w-[364px]">
-        <img
-          src={img2}
-          className="w-full h-auto block"
-          alt=""
-        />
-      </div>
+    <div className="absolute left-0 top-1/2 -translate-y-[40%] z-[5] w-[18%] max-w-[280px]">
+      <img src={img2} className="w-full h-auto block rounded-2xl shadow-lg opacity-90" alt="" />
     </div>
 
     {/* LEFT INNER */}
-    <div className="absolute -left-[8%] hidden md:block z-[7]">
-      <div className="relative max-w-[428px]">
-        <img
-          src={img6}
-          className="w-full h-auto block"
-          alt=""
-        />
-      </div>
+    <div className="absolute left-[14%] top-1/2 -translate-y-[45%] z-[7] w-[22%] max-w-[320px]">
+      <img src={img6} className="w-full h-auto block rounded-2xl shadow-xl" alt="" />
     </div>
 
-    {/* CENTER (Biggest) */}
-    <div className="relative z-10">
-      <div className="relative max-w-[520px] sm:max-w-[600px]">
-        <img
-          src={img1}
-          className="w-full h-auto block"
-          alt=""
-        />
-      </div>
+    {/* CENTER */}
+    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[28%] max-w-[420px]">
+      <img src={img1} className="w-full h-auto block rounded-2xl shadow-2xl" alt="" />
     </div>
 
     {/* RIGHT INNER */}
-    <div className="absolute -right-[8%] hidden md:block z-[7]">
-      <div className="relative max-w-[428px]">
-        <img
-          src={img3}
-          className="w-full h-auto block"
-          alt=""
-        />
-      </div>
+    <div className="absolute right-[14%] top-1/2 -translate-y-[45%] z-[7] w-[22%] max-w-[320px]">
+      <img src={img3} className="w-full h-auto block rounded-2xl shadow-xl" alt="" />
     </div>
 
     {/* RIGHT OUTER */}
-    <div className="absolute -right-[30%] hidden lg:block z-[6]">
-      <div className="relative max-w-[364px]">
-        <img
-          src={img4}
-          className="w-full h-auto block"
-          alt=""
-        />
-      </div>
+    <div className="absolute right-0 top-1/2 -translate-y-[40%] z-[5] w-[18%] max-w-[280px]">
+      <img src={img4} className="w-full h-auto block rounded-2xl shadow-lg opacity-90" alt="" />
     </div>
 
   </div>
 </div>
-
-
 
        
 
