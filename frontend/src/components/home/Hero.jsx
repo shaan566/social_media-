@@ -137,7 +137,7 @@ const Hero = () => {
   <div className="hidden lg:block relative h-[520px] xl:h-[580px]">
 
     {/* LEFT OUTER */}
-    <div className="absolute left-0 top-1/2 -translate-y-[40%] z-[5] w-[18%] max-w-[280px]">
+    <div className="absolute -left-10 top-1/2 -translate-y-[40%] z-[5] w-[18%] max-w-[280px]">
       <img src={img2} className="w-full h-auto block rounded-2xl shadow-lg opacity-90" alt="" />
     </div>
 
@@ -157,7 +157,7 @@ const Hero = () => {
     </div>
 
     {/* RIGHT OUTER */}
-    <div className="absolute right-0 top-1/2 -translate-y-[40%] z-[5] w-[18%] max-w-[280px]">
+    <div className="absolute -right-10 top-1/2 -translate-y-[40%] z-[5] w-[18%] max-w-[280px]">
       <img src={img4} className="w-full h-auto block rounded-2xl shadow-lg opacity-90" alt="" />
     </div>
 
