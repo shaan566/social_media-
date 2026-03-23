@@ -14,6 +14,12 @@ import img2 from "../../assets/img2.webp";
 import img3 from "../../assets/img3.webp";
 import img4 from "../../assets/img4.webp";
 import img6 from "../../assets/img6.webp";
+import image1 from "../../assets/float-16.9k-02.png"
+import image2 from "../../assets/float-commission-02.png"
+import image3 from "../../assets/influencer-static-hero.webp"
+import video from "../../assets/home-page-no-audio-1.mov"
+import video2 from "../../assets/brands-page-no-audio.mov"
+import { Navigate } from 'react-router-dom';
 
 
 const Hero = () => {
@@ -162,6 +168,101 @@ const Hero = () => {
     </div>
 
   </div>
+</div>
+
+{/* <div className='flex flex-row gap-10 justify-center'>
+  <div className='w-1/2'>
+   <div className=''>
+    <span className='font-bold text-6xl'>Earn money as an Everyday Influencer</span><br/>
+    
+    <span className='text-4xl'>Turn your passions into profit. Mavely's easy-to-use technology lets you create shoppable SmartLinks to share products your audience loves. When they shop, you earn.</span>
+   </div>
+
+  </div>
+  <div className='w-1/2'>
+    <img  className = "" src = {image1}/>
+    <img className='' src = {image2} />
+   
+  
+    <video className='w-full h-150 rounded-xl shadow-lg' src = {video1}  autoPlay loop muted playsInline controlsList='nodownload'></video>
+  </div>
+
+</div> */}
+<div className='flex flex-col lg:flex-row gap-16 justify-center items-center max-w-7xl mx-auto px-6 '>
+  
+  {/* Left Side: Text Content */}
+  <div className='w-full lg:w-1/2 space-y-6'>
+    <h1 className='font-bold font-Roboto Condensed text-4xl md:text-6xl lg:text-7xl leading-tight text-gray-900'>
+      Earn money as an Everyday Influencer
+    </h1>
+    
+    <p className='text-xl md:text-2xl font-Roboto Condensed text-gray-600 leading-relaxed max-w-xl'>
+      Turn your passions into profit. Schedly easy-to-use technology lets you 
+      create shoppable SmartLinks to share products your audience loves. 
+      When they shop, you earn.
+    </p>
+
+    {/* Optional: Add your button here to match the design */}
+    {/* <button  className="bg-black text-white px-8 py-4 rounded-full font-bold hover:bg-gray-800 transition-all">
+      Join now
+    </button> */}
+  </div>
+
+  {/* Right Side: Video + Floating Images */}
+  <div className='w-full lg:w-1/2 flex justify-center'>
+    {/* This relative div is the "anchor" for the absolute images */}
+    <div className='relative w-full max-w-[400px]'>
+      
+      {/* Floating Image 1 (Top Left) */}
+      <img 
+        className="absolute -top-10 -left-10 w-32 md:w-44 z-20 animate-drift-left drop-shadow-xl" 
+        src={image1} 
+        alt="decoration"
+      />
+      
+      {/* Floating Image 2 (Bottom Right) */}
+      <img 
+        className="absolute -bottom-8 -right-8 w-36 md:w-52 z-20 animate-drift-left drop-shadow-xl" 
+        src={image2} 
+        alt="decoration"
+      />
+   
+      {/* The Central Video */}
+      <div className="rounded-[2.5rem] overflow-hidden shadow-2xl border-12 border-white bg-gray-100 aspect-[9/16]">
+        <video 
+          className='w-full h-full object-cover' 
+          src={video}  
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          controlsList='nodownload'
+        />
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+  <div className='rounded-[2.5rem] flex flex-col w-auto h-300 items-center justify-center p-8 overflow-hidden shadow-2xl border-[12px] border-white bg-red-600 aspect-[9/16] space-y-6'>
+  
+  {/* Header Text */}
+  <span className='text-center font-semibold text-gray-800 text-xl px-4'> 
+    Grow your social presence with confidence
+  </span>
+
+  {/* Main Button */}
+  <button className='w-full max-w-[200px] bg-black hover:bg-gray-800 text-white py-3 rounded-full transition-all duration-300 shadow-lg transform hover:scale-105'>
+    <span className="font-medium">
+      Get started for free
+    </span>
+  </button>
+
+  {/* Footer Badge/Text */}
+  <div className="bg-black text-white px-4 py-2 rounded-full text-xs font-medium tracking-wide">
+    No credit card needed. Free forever.
+  </div>
+
 </div>
 
        
