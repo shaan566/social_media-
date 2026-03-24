@@ -47,9 +47,9 @@ const Hero = () => {
             Your social media <br className="hidden sm:block" /> workspace
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto">
-            Share consistently without the chaos
-          </p>
+          {/* <span className="text-sm  text-black  mx-auto">
+           turn consistency into growth
+          </span> */}
          {/* Email Form */}
           <div className="w-full max-w-lg bg-white rounded-full">
             <div className="relative flex items-center">
@@ -243,26 +243,26 @@ const Hero = () => {
   </div>
 
   </div>
-
-  <div className='rounded-[2.5rem] flex flex-col w-auto h-300 items-center justify-center p-8 overflow-hidden shadow-2xl border-[12px] border-white bg-red-600 aspect-[9/16] space-y-6'>
-  
-  {/* Header Text */}
-  <span className='text-center font-semibold text-gray-800 text-xl px-4'> 
-    Grow your social presence with confidence
-  </span>
-
-  {/* Main Button */}
-  <button className='w-full max-w-[200px] bg-black hover:bg-gray-800 text-white py-3 rounded-full transition-all duration-300 shadow-lg transform hover:scale-105'>
-    <span className="font-medium">
-      Get started for free
+  <div className = "py-25"> 
+    <div className='rounded-[2.5rem] flex flex-col w-full max-w-[1800px] mx-auto px-8 h-[600px] items-center justify-center p-8 overflow-hidden shadow-2xl border-[12px] border-white bg-green-300 aspect-[9/16] space-y-6'>
+      
+      {/* Header Text */}
+    <span className="text-center font-semibold text-black text-5xl  mx-auto px-4">
+      Grow your social presence <br/>with confidence
     </span>
-  </button>
 
-  {/* Footer Badge/Text */}
-  <div className="bg-black text-white px-4 py-2 rounded-full text-xs font-medium tracking-wide">
-    No credit card needed. Free forever.
-  </div>
+      {/* Main Button */}
+      <button onClick={() => navigate('/login')} className='w-full max-w-[200px] bg-black hover:bg-gray-800 text-white py-3 rounded-full transition-all duration-300 shadow-lg transform hover:scale-105'>
+        <span className="font-medium">
+          Get started for free
+        </span>
+      </button>
 
+      {/* Footer Badge/Text */}
+      <div className="text-black px-4 py-2  text-xl font-medium">
+        No credit card needed. Free forever.
+      </div>
+    </div>
 </div>
 
        
