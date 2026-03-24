@@ -19,7 +19,6 @@ import image2 from "../../assets/float-commission-02.png"
 import image3 from "../../assets/influencer-static-hero.webp"
 import video from "../../assets/home-page-no-audio-1.mov"
 import video2 from "../../assets/brands-page-no-audio.mov"
-import { Navigate } from 'react-router-dom';
 
 
 const Hero = () => {
@@ -33,6 +32,7 @@ const Hero = () => {
 
   const navigate = useNavigate();
 
+ 
 
   return (
     <div className="relative min-h-screen overflow-hidden" >
@@ -42,7 +42,9 @@ const Hero = () => {
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-20">
        
         <div className="max-w-4xl mx-auto text-center space-y-8">
-           <FloatingDecorations side="both" />
+              <div className="hidden md:block">
+                   <FloatingDecorations side="both" />
+              </div>
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black leading-tight">
             Your social media <br className="hidden sm:block" /> workspace
           </h1>
@@ -243,8 +245,16 @@ const Hero = () => {
   </div>
 
   </div>
+   <div className='rounded-[2.5rem] flex flex-col w-full mt-20 max-w-7xl mx-auto px-4 h-[500px] items-center justify-center p-8 overflow-hidden shadow-2xl border-[12px] border-white bg-green-300 aspect-[9/16] space-y-6'>
+      <div className="max-w-7xl mx-auto px-6 text-center">
+        
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          
+        </div>
+      </div>
+    </div>
   <div className = "py-25"> 
-    <div className='rounded-[2.5rem] flex flex-col w-full max-w-[1800px] mx-auto px-8 h-[600px] items-center justify-center p-8 overflow-hidden shadow-2xl border-[12px] border-white bg-green-300 aspect-[9/16] space-y-6'>
+    <div className='rounded-[2.5rem] flex flex-col w-full max-w-7xl mx-auto px-4 h-[500px] items-center justify-center p-8 overflow-hidden shadow-2xl border-[12px] border-white bg-green-300 aspect-[9/16] space-y-6'>
       
       {/* Header Text */}
     <span className="text-center font-semibold text-black text-5xl  mx-auto px-4">
