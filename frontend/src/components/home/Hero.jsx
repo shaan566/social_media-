@@ -21,8 +21,72 @@ import video from "../../assets/home-page-no-audio-1.mov"
 import video2 from "../../assets/brands-page-no-audio.mov"
 
 
+const tabs = [
+  {
+    id: "creators",
+    label: "Creators",
+    headline: ["Grow from zero", "to → one", "to → one million"],
+    accentIndex: 1,
+    sub: "Whether you're just getting started or scaling to new heights, Schedly gets your content in front of more people.",
+    features: [
+      { icon: "💡", title: "Save Ideas", desc: "Capture every spark of inspiration the moment it strikes." },
+      { icon: "📊", title: "Learn What Works", desc: "Understand exactly what content performs best and why." },
+      { icon: "🔁", title: "Crosspost Everywhere", desc: "Create once, publish to every platform instantly." },
+    ],
+    bg: "linear-gradient(145deg, #bbf7d0 0%, #86efac 60%, #4ade80 100%)",
+    cardBg: "rgba(255,255,255,0.75)",
+    accentColor: "#5994bb",
+    headlineAccent: "#15803d",
+    tabActiveBg: "#15803d",
+    pillBg: "rgba(21,128,61,0.12)",
+    pillText: "#14532d",
+  },
+  {
+    id: "small-biz",
+    label: "Small Businesses",
+    headline: ["Level up your", "social presence", "without the drain"],
+    accentIndex: 1,
+    sub: "Every minute and dollar counts. Schedly multiplies your efforts and keeps your presence thriving with minimal effort.",
+    features: [
+      { icon: "📅", title: "Schedule Ahead", desc: "Plan content weeks or months in advance effortlessly." },
+      { icon: "🗂️", title: "One Dashboard", desc: "See all posts, channels, and analytics in one clean view." },
+      { icon: "🏆", title: "World-Class Support", desc: "Real humans ready to help whenever you need them." },
+    ],
+    bg: "linear-gradient(145deg, #bfdbfe 0%, #93c5fd 60%, #60a5fa 100%)",
+    cardBg: "rgba(255,255,255,0.75)",
+    accentColor: "#1d4ed8",
+    headlineAccent: "#1e40af",
+    tabActiveBg: "#1d4ed8",
+    pillBg: "rgba(29,78,216,0.1)",
+    pillText: "#1e3a8a",
+  },
+  {
+    id: "agencies",
+    label: "Agencies",
+    headline: ["The most trusted", "tool for agencies", "& freelancers"],
+    accentIndex: 1,
+    sub: "Schedly has been helping freelancers, consultants, and agencies grow client accounts for more than a decade.",
+    features: [
+      { icon: "✅", title: "Review & Approve", desc: "Intuitive workflows that keep every client in the loop." },
+      { icon: "🔐", title: "Custom Permissions", desc: "Fine-grained access control for every team and client." },
+      { icon: "📈", title: "Scales With You", desc: "Unlimited invites and pricing that grows with your business." },
+    ],
+    bg: "linear-gradient(145deg, #fde68a 0%, #fcd34d 60%, #f59e0b 100%)",
+    cardBg: "rgba(255,255,255,0.75)",
+    accentColor: "#b45309",
+    headlineAccent: "#92400e",
+    tabActiveBg: "#b45309",
+    pillBg: "rgba(180,83,9,0.1)",
+    pillText: "#78350f",
+  },
+];
+
+
 const Hero = () => {
   const [email, setEmail] = useState('');
+  const [active, setActive] = useState(0);
+  const tab = tabs[active];
+ 
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,6 +96,7 @@ const Hero = () => {
 
   const navigate = useNavigate();
 
+ 
  
 
   return (
@@ -195,13 +260,12 @@ const Hero = () => {
   {/* Left Side: Text Content */}
   <div className='w-full lg:w-1/2 space-y-6'>
     <h1 className='font-bold font-Roboto Condensed text-4xl md:text-6xl lg:text-7xl leading-tight text-gray-900'>
-      Earn money as an Everyday Influencer
+      Monetize your everyday influence
     </h1>
     
     <p className='text-xl md:text-2xl font-Roboto Condensed text-gray-600 leading-relaxed max-w-xl'>
-      Turn your passions into profit. Schedly easy-to-use technology lets you 
-      create shoppable SmartLinks to share products your audience loves. 
-      When they shop, you earn.
+    Schedly helps you plan, create, and schedule content your audience loves — all while building and monetizing your presence.
+      
     </p>
 
     {/* Optional: Add your button here to match the design */}
@@ -245,16 +309,107 @@ const Hero = () => {
   </div>
 
   </div>
-   <div className='rounded-[2.5rem] flex flex-col w-full mt-20 max-w-7xl mx-auto px-4 h-[500px] items-center justify-center p-8 overflow-hidden shadow-2xl border-[12px] border-white bg-green-300 aspect-[9/16] space-y-6'>
-      <div className="max-w-7xl mx-auto px-6 text-center">
-        
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
-          
-        </div>
-      </div>
+
+
+  <div className="min-h-screen flex items-center justify-center px-4 py-8 font-sans">
+
+  {/* Card */}
+  <div
+    className="w-full max-w-7xl h-[500px] rounded-[2.5rem] border-[10px] border-white shadow-[0_32px_80px_rgba(0,0,0,0.18),0_8px_24px_rgba(0,0,0,0.1)] overflow-hidden transition-all duration-300"
+    style={{ background: tab.bg }}
+  >
+
+    {/* Tabs */}
+    <div className="flex gap-2 px-5 pt-5 justify-center flex-wrap">
+      {tabs.map((t, i) => (
+        <button
+          key={t.id}
+          onClick={() => setActive(i)}
+          className={`px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 hover:-translate-y-[1px]
+            ${i === active
+              ? "text-white shadow-lg"
+              : "bg-white/70 text-black/60"
+            }`}
+          style={{
+            background: i === active ? tab.tabActiveBg : undefined,
+          }}
+        >
+          {t.label}
+        </button>
+      ))}
     </div>
+
+    {/* Divider */}
+    <div className="h-[1px] bg-white/50 mx-5 mt-4" />
+
+    {/* Content */}
+    <div key={active} className="p-7 flex flex-col gap-6 animate-[fadeUp_0.3s_ease]">
+
+      {/* Headline */}
+      <div>
+        {tab.headline.map((line, i) => (
+          <h1
+            key={i}
+            className={`text-5xl font-bold leading-tight tracking-tight ${
+              i === tab.accentIndex ? "italic" : ""
+            }`}
+            style={{
+              color:
+                i === tab.accentIndex
+                  ? tab.headlineAccent
+                  : "rgba(0,0,0,0.78)",
+              fontFamily: "Playfair Display, serif",
+            }}
+          >
+            {line}
+          </h1>
+        ))}
+
+        <p className="text-xl text-black/60 mt-3 leading-relaxed">
+          {tab.sub}
+        </p>
+      </div>
+
+      {/* Features */}
+      <div className="flex flex-row gap-3">
+        {tab.features.map((f) => (
+          <div
+            key={f.title}
+            className="flex gap-3 p-4 rounded-xl border border-white/80 bg-white/70 backdrop-blur-md hover:translate-x-1 transition-all"
+          >
+            <span className="text-lg">{f.icon}</span>
+            <div>
+              <p className="text-sm font-semibold text-black/80">
+                {f.title}
+              </p>
+              <p className="text-xs text-black/50">
+                {f.desc}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* CTA */}
+      {/* <div className="flex items-center gap-3">
+        <button
+          className="flex-1 px-5 py-3 rounded-full text-sm font-semibold text-white hover:scale-[1.02] transition"
+          style={{ background: tab.tabActiveBg }}
+        >
+          Get started free →
+        </button>
+
+        <button className="px-5 py-3 rounded-full text-sm font-medium bg-white/60 border border-white/80 text-black/60 hover:bg-white/90 transition whitespace-nowrap">
+          See how it works
+        </button>
+      </div> */}
+    </div>
+
+    
+  </div>
+</div>
   <div className = "py-25"> 
-    <div className='rounded-[2.5rem] flex flex-col w-full max-w-7xl mx-auto px-4 h-[500px] items-center justify-center p-8 overflow-hidden shadow-2xl border-[12px] border-white bg-green-300 aspect-[9/16] space-y-6'>
+    <div className='rounded-[2.5rem] flex flex-col w-full max-w-7xl mx-auto px-4 h-[500px] items-center justify-center p-8 overflow-hidden shadow-2xl border-[12px] border-white bg-blue-300 aspect-[9/16] space-y-6'>
       
       {/* Header Text */}
     <span className="text-center font-semibold text-black text-5xl  mx-auto px-4">

@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <div>
-       <footer className="px-6 bg-gray-900 md:px-16 lg:px-24 xl:px-32 pt-8 w-full">
+       <footer className="px-6 md:px-16 lg:px-24 xl:px-32 pt-8 w-full ">
             <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-500/30 pb-6">
                  <div className="flex flex-col items-center md:flex-row justify-between space-y-6 md:space-y-0 -translate-y-5">
                               <div className="space-y-2">
@@ -45,7 +45,7 @@ const Footer = () => {
                                 </ul>
                               </div>
                             </div>
-                <div className="flex-1 flex items-start text-white md:justify-end gap-20">
+                <div className="flex-1 flex items-start text-black md:justify-end gap-20">
                     <div>
                         <h2 className="font-semibold mb-5">Company</h2>
                         <ul className="text-m space-y-2">
@@ -62,13 +62,13 @@ const Footer = () => {
                             <p>The latest news, articles, and resources, sent to your inbox weekly.</p>
                             <div className="flex items-center gap-2 pt-4">
                                 <input className="border border-gray-500/30 placeholder-gray-500 focus:ring-2 ring-indigo-600 outline-none w-full max-w-64 h-9 rounded px-2" type="email" placeholder="Enter your email" />
-                                <button className="bg-blue-600 w-24 h-9 text-white rounded">Subscribe</button>
+                                <button className="bg-blue-600 w-24 h-9 text-black rounded">Subscribe</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <p className="pt-4 text-center  text-white text-xs md:text-m pb-5">
+            <p className="pt-4 text-center  text-black text-xs md:text-m pb-5">
                  Made in India ❤️ <br/>
                  {new Date().getFullYear()} All Right Reserved.
 
