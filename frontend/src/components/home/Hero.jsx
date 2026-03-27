@@ -19,7 +19,10 @@ import image2 from "../../assets/float-commission-02.png"
 import image3 from "../../assets/influencer-static-hero.webp"
 import video from "../../assets/home-page-no-audio-1.mov"
 import video2 from "../../assets/brands-page-no-audio.mov"
+import { FaFacebook, FaLinkedin, FaPinterest, FaYoutube, FaMastodon } from 'react-icons/fa6';
+import { FaBluesky } from 'react-icons/fa6';
 
+import { SiThreads,  } from 'react-icons/si';
 
 const tabs = [
   {
@@ -81,6 +84,19 @@ const tabs = [
   },
 ];
 
+const Social_icon = [
+  { name: "Instagram",        icon: <FaInstagram  size={35}/>,        link: "/instagram",             color: "bg-pink-100" },
+  { name: "Facebook",         icon: <FaFacebook size={35} />,         link: "/facebook",              color: "bg-blue-100" },
+  { name: "Threads",          icon: <SiThreads size={35}  />,          link: "/threads",               color: "bg-gray-100" },
+  { name: "X",                icon: <FaXTwitter size={35}/>,         link: "/x",                     color: "bg-gray-100" },
+  { name: "LinkedIn",         icon: <FaLinkedin size={35}/>,         link: "/linkedin",              color: "bg-blue-100" },
+  { name: "YouTube",          icon: <FaYoutube size={35}/>,          link: "/youtube",               color: "bg-red-100"  },
+  { name: "TikTok",           icon: <FaTiktok size={35}/>,           link: "/tiktok",               color: "bg-gray-100" },
+  { name: "Pinterest",        icon: <FaPinterest size={35}/>,        link: "/pinterest",             color: "bg-red-100"  },
+  { name: "Bluesky",          icon: <FaBluesky size={35}/>,          link: "/bluesky",               color: "bg-sky-100"  },
+  { name: "Mastodon",         icon: <FaMastodon size={35}/>,         link: "/mastodon",              color: "bg-purple-100"},
+  { name: "Google Business",  icon: <FaBluesky size={35} />, link: "/google-business-profile", color: "bg-yellow-100"},
+];
 
 const Hero = () => {
   const [email, setEmail] = useState('');
@@ -237,6 +253,30 @@ const Hero = () => {
   </div>
 </div>
 
+ 
+ <div className="rounded-[2.5rem] flex flex-col items-center mt-5 h-[200px] max-w-7xl mx-auto py-8 px-6 shadow-2xl bg-white">
+      <span className="text-xl font-semibold mb-6">Connect your favourite accounts</span>
+      <br />
+
+      <div className="flex flex-row gap-3 flex-wrap justify-center">
+        {Social_icon.map((items) => (
+          <a
+            key={items.name}
+            href={items.link}
+            className="flex items-center gap-3 px-5 py-3 rounded-xl border border-gray-200 bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+          >
+            <span className="w-10 h-10 text-xl" style={{ color: items.color }}>
+              {items.icon}
+            </span>
+             <span className="text-sm font-medium text-gray-700">{items.name}</span>             
+            {/* <span className="text-xs text-gray-400">→</span> */}
+          </a>
+          
+        ))}
+
+      </div>
+    </div>
+
 {/* <div className='flex flex-row gap-10 justify-center'>
   <div className='w-1/2'>
    <div className=''>
@@ -255,7 +295,7 @@ const Hero = () => {
   </div>
 
 </div> */}
-<div className='flex flex-col lg:flex-row gap-16 justify-center items-center max-w-7xl mx-auto px-6 '>
+<div className='flex flex-col lg:flex-row gap-16 justify-center items-center max-w-7xl mx-auto px-6 mt-20 '>
   
   {/* Left Side: Text Content */}
   <div className='w-full lg:w-1/2 space-y-6'>
