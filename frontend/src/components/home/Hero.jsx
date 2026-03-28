@@ -85,17 +85,16 @@ const tabs = [
 ];
 
 const Social_icon = [
-  { name: "Instagram",        icon: <FaInstagram  size={35}/>,        link: "/instagram",             color: "bg-pink-100" },
-  { name: "Facebook",         icon: <FaFacebook size={35} />,         link: "/facebook",              color: "bg-blue-100" },
-  { name: "Threads",          icon: <SiThreads size={35}  />,          link: "/threads",               color: "bg-gray-100" },
-  { name: "X",                icon: <FaXTwitter size={35}/>,         link: "/x",                     color: "bg-gray-100" },
-  { name: "LinkedIn",         icon: <FaLinkedin size={35}/>,         link: "/linkedin",              color: "bg-blue-100" },
-  { name: "YouTube",          icon: <FaYoutube size={35}/>,          link: "/youtube",               color: "bg-red-100"  },
-  { name: "TikTok",           icon: <FaTiktok size={35}/>,           link: "/tiktok",               color: "bg-gray-100" },
-  { name: "Pinterest",        icon: <FaPinterest size={35}/>,        link: "/pinterest",             color: "bg-red-100"  },
-  { name: "Bluesky",          icon: <FaBluesky size={35}/>,          link: "/bluesky",               color: "bg-sky-100"  },
-  { name: "Mastodon",         icon: <FaMastodon size={35}/>,         link: "/mastodon",              color: "bg-purple-100"},
-  { name: "Google Business",  icon: <FaBluesky size={35} />, link: "/google-business-profile", color: "bg-yellow-100"},
+  { name: "Instagram", theme: "instagram", icon: <FaInstagram size={35} />, link: "/instagram" },
+  { name: "Facebook", theme: "facebook", icon: <FaFacebook size={35} />, link: "/facebook" },
+  { name: "Threads", theme: "threads", icon: <SiThreads size={35} />, link: "/threads" },
+  { name: "X", theme: "x", icon: <FaXTwitter size={35} />, link: "/x" },
+  { name: "LinkedIn", theme: "linkedin", icon: <FaLinkedin size={35} />, link: "/linkedin" },
+  { name: "YouTube", theme: "youtube", icon: <FaYoutube size={35} />, link: "/youtube" },
+  { name: "TikTok", theme: "tiktok", icon: <FaTiktok size={35} />, link: "/tiktok" },
+  { name: "Pinterest", theme: "pinterest", icon: <FaPinterest size={35} />, link: "/pinterest" },
+  { name: "Bluesky", theme: "bluesky", icon: <FaBluesky size={35} />, link: "/bluesky" },
+  { name: "Mastodon", theme: "mastodon", icon: <FaMastodon size={35} />, link: "/mastodon" },
 ];
 
 const Hero = () => {
@@ -254,8 +253,8 @@ const Hero = () => {
 </div>
 
  
- <div className="rounded-[2.5rem] flex flex-col items-center mt-5 h-[200px] max-w-7xl mx-auto py-8 px-6 shadow-2xl bg-white">
-      <span className="text-xl font-semibold mb-6">Connect your favourite accounts</span>
+ <div className="rounded-[2.5rem] flex flex-col items-center mt-5 h-[300px] max-w-7xl mx-auto py-8 px-6 shadow-2xl bg-white ">
+      <span className="text-3xl font-semibold mb-6">Connect your favourite accounts</span>
       <br />
 
       <div className="flex flex-row gap-3 flex-wrap justify-center">
@@ -263,12 +262,13 @@ const Hero = () => {
           <a
             key={items.name}
             href={items.link}
-            className="flex items-center gap-3 px-5 py-3 rounded-xl border border-gray-200 bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+            data-theme={items.theme} 
+            className="flex items-center gap-3 px-5 py-3 rounded-xl border border-black bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
           >
-            <span className="w-10 h-10 text-xl" style={{ color: items.color }}>
+            <span className="w-10 h-10 text-xl" style={{ color: "var(--theme-color)" }}>
               {items.icon}
             </span>
-             <span className="text-sm font-medium text-gray-700">{items.name}</span>             
+             {/* <span className="text-sm font-medium text-gray-700">{items.name}</span>              */}
             {/* <span className="text-xs text-gray-400">→</span> */}
           </a>
           

@@ -1,111 +1,83 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FaArrowRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Header = () => {
-  const navigate = useNavigate();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // Toggle function for mobile menu
-  const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const navLinks = [
-    { name: "Features", path: "/Features" },
-    { name: "Channels", path: "/Channels" },
-    { name: "Resources", path: "/Resources" },
-    { name: "Messages", path: "/Messages" },
+    { name: "Features", path: "/features" },
+    { name: "Channels", path: "/channels" },
+    { name: "Pricing", path: "/pricing", hasArrow: true },
+    { name: "Resources", path: "/resources" },
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-lg">
-      <nav
-        aria-label="Global"
-        className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8"
-      >
-        {/* LOGO SECTION */}
-        <div className="flex-1">
-          <Link to="/" className="flex items-start gap-2 group py-2.5">          
-            <span className="text-4xl font-bold text-black">
-              Schedly<span className="text-blue-600">.</span>
-            </span>
-          </Link>
+    <header className="sticky top-0 z-50 px-6 py-5">
+      <div className="mx-auto flex max-w-7xl items-center">
+
+        {/* LOGO — left, no absolute */}
+        <div className="flex flex-1 justify-start">
+        <Link to="/" className="text-4xl font-bold text-black shrink-0">
+          Schedly.
+        </Link>
         </div>
 
-        {/* MOBILE MENU BUTTON */}
-        <div className="flex lg:hidden">
-          <button
-            type="button"
-            onClick={toggleMenu}
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400 hover:text-black"
-          >
-            <span className="sr-only">Open main menu</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="size-7">
-              <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        </div>
-
-        {/* DESKTOP LINKS */}
-        <div className="hidden lg:flex lg:gap-x-10">
+        {/* PILL NAV — centered */}
+        <div className = "hidden lg:flex flex-1 justify-center">
+        <nav className="hidden lg:flex items-center gap-1 bg-white rounded-full px-2 py-1.5 shadow-md">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               to={link.path}
-              className="text-xl font-bold text-black hover:text-blue-700 transition-colors"
+              className="text-2xl font-medium text-gray-800 px-5 py-2 rounded-full hover:bg-gray-100 transition-colors whitespace-nowrap"
+            >
+              {link.name}{link.hasArrow ? " ▾" : ""}
+            </Link>
+          ))}
+        </nav>
+        </div>
+
+        {/* AUTH BUTTONS — right, no absolute */}
+        <div className="hidden lg:flex flex-1 justify-end items-center gap-3">
+          <Link
+            to="/login"
+            className="text-lg font-semibold text-white bg-blue-600 px-6 py-2 rounded-full hover:bg-blue-700 transition-colors"
+          >
+            Log in
+          </Link>
+        </div>
+
+        {/* MOBILE MENU BUTTON */}
+        <button
+          className="lg:hidden text-black"
+          onClick={() => setMobileOpen(!mobileOpen)}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-7 h-7">
+            {mobileOpen
+              ? <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
+              : <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" strokeLinecap="round" strokeLinejoin="round" />
+            }
+          </svg>
+        </button>
+      </div>
+
+      {/* MOBILE MENU */}
+      {mobileOpen && (
+        <div className="lg:hidden mt-4 bg-white rounded-2xl p-4 shadow-xl">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.path}
+              onClick={() => setMobileOpen(false)}
+              className="block px-4 py-3 text-sm font-semibold text-gray-800 rounded-xl hover:bg-gray-50"
             >
               {link.name}
             </Link>
           ))}
-        </div>
-
-        {/* DESKTOP AUTH BUTTONS */}
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-6 items-center">
-          <Link to="/login" className="text-2xl font-semibold text-black hover:text-blue-600">
-            Log in 
+          <hr className="my-3 border-gray-100" />
+          <Link to="/login" onClick={() => setMobileOpen(false)} className="block mt-2 text-center bg-blue-600 text-white font-semibold py-3 rounded-xl">
+            Log in
           </Link>
-          {/* <button 
-            onClick={() => navigate('/register')}
-            className="rounded-full bg-blue-600 px-5 py-2 text-sm font-bold text-black shadow-sm hover:bg-blue-600 transition-all"
-          >
-            Start Free
-          </button> */}
-        </div>
-      </nav>
-
-      {/* MOBILE MENU OVERLAY */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 overflow-y-auto bg-gray-900 px-6 py-6 transition-all">
-          <div className="flex items-center justify-between">
-            <span className="text-xl font-bold text-black">Schedly.</span>
-            <button onClick={toggleMenu} className="text-gray-400">
-              {/* <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="size-7">
-                <path d="M6 18 18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
-              </svg> */}
-            </button>
-          </div>
-          <div className="mt-10 space-y-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                onClick={toggleMenu}
-                className="block rounded-lg px-3 py-4 text-lg font-semibold text-black hover:bg-white/10"
-              >
-                {link.name}
-              </Link>
-            ))}
-            <hr className="border-white/10 my-6" />
-            <Link
-              to="/login"
-              onClick={toggleMenu}
-              className="block px-3 py-4 text-lg font-semibold text-black"
-            >
-              Log in
-            </Link>
-            {/* <button className="w-full bg-blue-600 text-black py-4 rounded-xl font-bold mt-4">
-              Get Started
-            </button> */}
-          </div>
         </div>
       )}
     </header>

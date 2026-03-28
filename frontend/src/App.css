@@ -1,0 +1,24 @@
+:root {
+  --instagram: #E1306C;
+  --facebook: #1877F2;
+  --threads: #000000;
+  --x: #000000;
+  --linkedin: #0A66C2;
+  --youtube: #FF0000;
+  --tiktok: #000000;
+  --pinterest: #E60023;
+  --bluesky: hsl(211, 99%, 53%);
+  --mastodon: #6364FF;
+}
+
+/* Theme mapping */
+[data-theme="instagram"] { --theme-color: var(--instagram); }
+[data-theme="facebook"] { --theme-color: var(--facebook); }
+[data-theme="threads"] { --theme-color: var(--threads); }
+[data-theme="x"] { --theme-color: var(--x); }
+[data-theme="linkedin"] { --theme-color: var(--linkedin); }
+[data-theme="youtube"] { --theme-color: var(--youtube); }
+[data-theme="tiktok"] { --theme-color: var(--tiktok); }
+[data-theme="pinterest"] { --theme-color: var(--pinterest); }
+[data-theme="bluesky"] { --theme-color: var(--bluesky); }
+[data-theme="mastodon"] { --theme-color: var(--mastodon); }

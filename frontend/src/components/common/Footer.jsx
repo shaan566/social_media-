@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <div>
-       <footer className="px-6 md:px-16 lg:px-24 xl:px-32 pt-8 w-full ">
+       <footer className="px-6 md:px-16 lg:px-24 xl:px-32 pt-8 w-full rounded-t-4xl bg-green-300">
             <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-500/30 pb-6">
                  <div className="flex flex-col items-center md:flex-row justify-between space-y-6 md:space-y-0 -translate-y-5">
                               <div className="space-y-2">

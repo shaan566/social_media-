@@ -24,7 +24,7 @@ const App = () => {
       <Route path="/features" element={<ComingSoon />} />
       <Route path="/channels" element={<ComingSoon />} />
       <Route path="/resources" element={<ComingSoon />} />
-      <Route path="/messages" element={<ComingSoon />} />
+      <Route path="/madefor" element={<ComingSoon />} />
       <Route path="*" element={<ComingSoon />} />
       <Route path="/dashboard" element= {<Dashboard/>} />
     </Route>
