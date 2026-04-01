@@ -1,40 +1,77 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
+import Features from "../../Modals/Features";
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  // const [isOpen,setIsOpen] = useState(false); 
+  const [activeModal, setActiveModal] = useState(null);
 
-  const navLinks = [
-    { name: "Features", path: "/features" },
-    { name: "Channels", path: "/channels" },
-    { name: "Pricing", path: "/pricing", hasArrow: true },
-    { name: "Resources", path: "/resources" },
-  ];
+
+ const navLinks = [
+  { name: "Features", type: "modal", modal: "features"  },
+  { name: "Channels", type: "modal", modal: "channels" },
+  { name: "Pricing", type: "link", path: "/pricing" },
+  { name: "Resources", type: "modal", modal: "resources" },
+];
 
   return (
     <header className="sticky top-0 z-50 px-6 py-5">
-      <div className="mx-auto flex max-w-7xl items-center">
+      <div className="mx-auto flex flex-row max-w-7xl items-center">   
 
         {/* LOGO — left, no absolute */}
         <div className="flex flex-1 justify-start">
-        <Link to="/" className="text-4xl font-bold text-black shrink-0">
+        <Link to="/" className="text-6xl font-avallon alt text-black shrink-0">
           Schedly.
         </Link>
         </div>
 
+
         {/* PILL NAV — centered */}
         <div className = "hidden lg:flex flex-1 justify-center">
-        <nav className="hidden lg:flex items-center gap-1 bg-white rounded-full px-2 py-1.5 shadow-md">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              className="text-2xl font-medium text-gray-800 px-5 py-2 rounded-full hover:bg-gray-100 transition-colors whitespace-nowrap"
-            >
-              {link.name}{link.hasArrow ? " ▾" : ""}
-            </Link>
-          ))}
-        </nav>
+        <nav className="flex items-center gap-1 bg-white rounded-full px-2 py-1.5 shadow-md">
+  {navLinks.map((link) => {
+    if (link.type === "modal") {
+      
+      return (
+        <button
+          key={link.name}
+          onClick={(e) => { 
+            e.stopPropagation();
+            setActiveModal(activeModal === link.modal ? null : link.modal) }
+          }
+          className="text-2xl font-medium text-gray-800 px-5 py-2 rounded-full hover:bg-gray-100 transition whitespace-nowrap"
+        >
+          <div className="flex items-center gap-2">
+            <span>{link.name}</span>
+            {activeModal === link.modal ? (
+              <IoIosArrowUp />
+            ) : (
+              <IoIosArrowDown />
+            )}
+          </div>
+        </button>
+      );
+    }
+
+    return (
+      <Link
+        key={link.name}
+        to={link.path}
+        className="text-2xl font-medium text-gray-800 px-5 py-2 rounded-full hover:bg-gray-100 transition whitespace-nowrap"
+      >
+        {link.name}
+      </Link>
+    );
+  })}
+</nav>
+
+                <Features
+  isOpen={activeModal === "features"}
+  setOpen={() => setActiveModal(null)}
+/> 
         </div>
 
         {/* AUTH BUTTONS — right, no absolute */}
@@ -71,7 +108,9 @@ const Header = () => {
               onClick={() => setMobileOpen(false)}
               className="block px-4 py-3 text-sm font-semibold text-gray-800 rounded-xl hover:bg-gray-50"
             >
+              
               {link.name}
+              {/* {isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />} */}
             </Link>
           ))}
           <hr className="my-3 border-gray-100" />
@@ -80,6 +119,7 @@ const Header = () => {
           </Link>
         </div>
       )}
+  
     </header>
   );
 };
