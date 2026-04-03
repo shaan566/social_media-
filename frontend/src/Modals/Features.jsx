@@ -1,10 +1,9 @@
 import React from "react";
-import Modal from "../common/Modal";
 import { Link } from "react-router-dom";
 
-// SVG icons for each feature
+// SVG icons (same as yours)
 const icons = {
-  Publish: (
+    Publish: (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M8.889 4.222v3.111m6.222-3.11v3.11M5 10.444h14M6.556 5.778h10.888c.86 0 1.556.696 1.556 1.555v10.89c0 .858-.696 1.555-1.556 1.555H6.556c-.86 0-1.556-.697-1.556-1.556V7.333c0-.859.696-1.555 1.556-1.555" />
     </svg>
@@ -37,44 +36,50 @@ const icons = {
 };
 
 const featuresData = [
-  { title: "Publish",      description: "Plan and schedule your content across social media platforms", link: "/publish" },
-  { title: "Collaborate",  description: "Work together seamlessly, from planning to publishing",        link: "/collaborate" },
-  { title: "Create",       description: "Build your own library of content ideas",                     link: "/create" },
-  { title: "Community",    description: "Easily engage with your community",                           link: "/community" },
-  { title: "Analytics",    description: "Measure performance and turn insights into growth",           link: "/analyze" },
-  { title: "AI Assistant", description: "Get help creating, refining, and repurposing content",       link: "/ai-assistant" },
+  { title: "Publish", description: "Plan and schedule your content", link: "/publish" },
+  { title: "Collaborate", description: "Work together seamlessly", link: "/collaborate" },
+  { title: "Create", description: "Build content ideas", link: "/create" },
+  { title: "Community", description: "Engage with your audience", link: "/community" },
+  { title: "Analytics", description: "Track and grow performance", link: "/analyze" },
+  { title: "AI Assistant", description: "AI-powered content help", link: "/ai-assistant" },
 ];
 
-const Features = ({ isOpen, setOpen }) => {
+const Features = () => {
   return (
-    <Modal isOpen={isOpen} setOpen={setOpen}>
-      <ul className="flex flex-col gap-1">
+    <div className="bg-white rounded-2xl shadow-xl border p-4 sm:p-5 w-full max-w-[600px]">
+
+      {/* Grid like Channels */}
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+
         {featuresData.map((item) => (
           <li key={item.title}>
             <Link
               to={item.link}
-              onClick={() => setOpen(null)}
-              className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 transition group"
+              className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 hover:shadow-sm transition group"
             >
-              {/* Icon box */}
-              <span className="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white text-gray-600 shrink-0 transition">
+
+              {/* Icon */}
+              <span className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl bg-gray-100 text-gray-600 group-hover:bg-white group-hover:shadow-sm transition shrink-0">
                 {icons[item.title]}
               </span>
 
               {/* Text */}
-              <span className="flex flex-col">
-                <span className="text-sm font-semibold text-gray-900 leading-tight">
+              <div className="flex flex-col">
+                <span className="text-sm font-semibold text-gray-900">
                   {item.title}
                 </span>
-                <span className="text-xs text-gray-500 leading-snug mt-0.5">
+
+                <span className="text-xs text-gray-500 mt-1 leading-relaxed">
                   {item.description}
                 </span>
-              </span>
+              </div>
+
             </Link>
           </li>
         ))}
+
       </ul>
-    </Modal>
+    </div>
   );
 };
 

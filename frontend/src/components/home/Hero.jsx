@@ -84,6 +84,7 @@ const tabs = [
   },
 ];
 
+
 const Social_icon = [
   { name: "Instagram", theme: "instagram", icon: <FaInstagram size={35} />, link: "/instagram" },
   { name: "Facebook", theme: "facebook", icon: <FaFacebook size={35} />, link: "/facebook" },
