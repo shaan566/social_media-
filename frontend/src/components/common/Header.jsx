@@ -1,191 +1,162 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import Features from "../../Modals/Features";
-import Chennals from "../../Modals/Chennals";
+import Channels from "../../Modals/Channels";
 import Madefor from "../../Modals/Madefor";
 import Resources from "../../Modals/Resources";
 
-const Header = () => {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeModal, setActiveModal] = useState(null);
-  const [mobileDropdown, setMobileDropdown] = useState(null);
+const navLinks = [
+  { name: "Features",  modal: "features"  },
+  { name: "Channels",  modal: "channels"  },
+  { name: "Made for",  modal: "madefor"   },
+  { name: "Resources", modal: "resources" },
+];
 
-  // ✅ Close dropdown on outside click
+const DropdownContent = ({ modal }) => {
+  if (modal === "features")  return <Features />;
+  if (modal === "channels")  return <Channels />;
+  if (modal === "madefor")   return <Madefor />;
+  if (modal === "resources") return <Resources />;
+  return null;
+};
+
+const Header = () => {
+  const [mobileOpen,   setMobileOpen]   = useState(false);
+  const [activeModal,  setActiveModal]  = useState(null);
+  const [mobilePanel,  setMobilePanel]  = useState(null);
+  const headerRef = useRef(null);
+
+  /* close desktop dropdown on outside click */
   useEffect(() => {
-    const handleClickOutside = () => setActiveModal(null);
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
+    const handler = (e) => {
+      if (headerRef.current && !headerRef.current.contains(e.target)) {
+        setActiveModal(null);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const navLinks = [
-    { name: "Features", type: "modal", modal: "features" },
-    { name: "Channels", type: "modal", modal: "channels" },
-    { name: "Madefor", type: "modal", modal: "madefor" },
-    { name: "Resources", type: "modal", modal: "resources" },
-  ];
+  /* lock body scroll when mobile menu is open */
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
+  const toggleDesktop = (modal) =>
+    setActiveModal((prev) => (prev === modal ? null : modal));
+
+  const toggleMobile = (modal) =>
+    setMobilePanel((prev) => (prev === modal ? null : modal));
 
   return (
-    <header className="sticky top-0 z-50 px-6 py-4 backdrop-blur-md">
-      <div className="mx-auto flex flex-row max-w-7xl items-center">
+    <header
+      ref={headerRef}
+      className="sticky top-0 z-50 w-full backdrop-blur-md "
+    >
+      {/* ── Top bar ── */}
+      <div className="mx-auto flex h-16 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
 
-        {/* LOGO */}
-        <div className="flex flex-1 justify-start">
-          <Link to="/" className="text-2xl font-bold tracking-tight text-gray-900">
-            Schedly.
-          </Link>
-        </div>
+        {/* Logo */}
+        <Link
+          to="/"
+          className="mr-auto text-xl font-bold tracking-tight text-gray-900 shrink-0"
+        >
+          Schedly.
+        </Link>
 
-        {/* NAV */}
-        <div className="hidden lg:flex flex-1 justify-center">
-          <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-full px-2 py-1.5 shadow-sm">
+        {/* Desktop nav pill */}
+        <nav className="hidden lg:flex items-center gap-1 rounded-full border border-gray-200 bg-white px-2 py-1.5 shadow-sm">
+          {navLinks.map((link) => (
+            <div key={link.name} className="relative">
+              <button
+                onClick={() => toggleDesktop(link.modal)}
+                className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                  activeModal === link.modal
+                    ? "bg-gray-100 text-black"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-black"
+                }`}
+              >
+                {link.name}
+                {activeModal === link.modal
+                  ? <IoIosArrowUp  size={14} />
+                  : <IoIosArrowDown size={14} />}
+              </button>
 
-            {navLinks.map((link) => {
-              if (link.type === "modal") {
-                return (
-                  <div key={link.name} className="relative">
+              {/* Dropdown panel */}
+              {activeModal === link.modal && (
+                <div className="absolute left-1/2 top-full mt-3 z-50 -translate-x-1/2">
+                  <DropdownContent modal={link.modal} />
+                </div>
+              )}
+            </div>
+          ))}
+        </nav>
 
-                    {/* BUTTON */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveModal(
-                          activeModal === link.modal ? null : link.modal
-                        );
-                      }}
-                      className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
-                        ${
-                          activeModal === link.modal
-                            ? "bg-gray-100 text-black shadow-sm"
-                            : "text-gray-700 hover:bg-gray-100 hover:text-black"
-                        }`}
-                    >
-                      <span>{link.name}</span>
-                      {activeModal === link.modal ? (
-                        <IoIosArrowUp size={16} />
-                      ) : (
-                        <IoIosArrowDown size={16} />
-                      )}
-                    </button>
-
-                    {/* DROPDOWN */}
-                    {activeModal === link.modal && (
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 z-50 animate-in fade-in zoom-in-95 duration-200">
-
-                        {link.modal === "features" && (
-                          <Features />
-                        )}
-
-                        {link.modal === "channels" && (
-                          <Chennals />
-                        )}
-
-                        {link.modal === "madefor" && (
-                          <Madefor />
-                        )}
-
-                        {link.modal === "resources" && (
-                          <Resources />
-                        )}
-
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-
-              return (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  className="text-sm font-medium text-gray-700 px-4 py-2 rounded-full hover:bg-gray-100 transition"
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* LOGIN */}
-        <div className="hidden lg:flex flex-1 justify-end items-center gap-3">
+        {/* Desktop CTA */}
+        <div className="hidden lg:flex ml-auto items-center gap-3">
           <Link
             to="/login"
-            className="text-sm font-semibold text-white bg-blue-600 px-5 py-2 rounded-full hover:bg-blue-700 transition-all shadow-sm hover:shadow-md"
+            className="rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 hover:shadow-md"
           >
             Log in
           </Link>
         </div>
 
-        {/* MOBILE BUTTON */}
+        {/* Mobile hamburger */}
         <button
-          className="lg:hidden text-black"
-          onClick={() => setMobileOpen(!mobileOpen)}
+          className="lg:hidden ml-auto p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+          aria-label="Toggle menu"
+          onClick={() => { setMobileOpen(!mobileOpen); setMobilePanel(null); }}
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-7 h-7">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
             {mobileOpen
-              ? <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
-              : <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" strokeLinecap="round" strokeLinejoin="round" />
+              ? <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              : <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
             }
           </svg>
         </button>
       </div>
 
-      {/* MOBILE MENU */}
-    {mobileOpen && (
-  <div className="lg:hidden mt-4 bg-white rounded-2xl p-4 shadow-xl space-y-2">
+      {/* ── Mobile drawer ── */}
+      {mobileOpen && (
+        <div className="lg:hidden border-t border-gray-100 bg-white overflow-y-auto max-h-[calc(100vh-4rem)]">
+          <div className="px-4 py-3 space-y-1">
 
-    {navLinks.map((link) => (
-      <div key={link.name} className="border-b border-gray-100 pb-2">
+            {navLinks.map((link) => (
+              <div key={link.name}>
+                <button
+                  onClick={() => toggleMobile(link.modal)}
+                  className="w-full flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold text-gray-800 hover:bg-gray-50 transition"
+                >
+                  {link.name}
+                  {mobilePanel === link.modal
+                    ? <IoIosArrowUp  size={16} />
+                    : <IoIosArrowDown size={16} />}
+                </button>
 
-        {/* BUTTON */}
-        <button
-          onClick={() =>
-            setMobileDropdown(
-              mobileDropdown === link.modal ? null : link.modal
-            )
-          }
-          className="w-full flex justify-between items-center px-4 py-3 text-sm font-semibold text-gray-800 rounded-xl hover:bg-gray-50"
-        >
-          {link.name}
-          {mobileDropdown === link.modal ? <IoIosArrowUp /> : <IoIosArrowDown />}
-        </button>
+                {/* Accordion panel — strip the card shadow since it's inline */}
+                {mobilePanel === link.modal && (
+                  <div className="px-2 pb-2">
+                    <DropdownContent modal={link.modal} />
+                  </div>
+                )}
+              </div>
+            ))}
 
-        {/* DROPDOWN CONTENT */}
-        {mobileDropdown === link.modal && (
-          <div className="mt-2 pl-2">
-
-            {link.modal === "features" && (
-              <Features isOpen={true} setOpen={() => {}} />
-            )}
-
-            {link.modal === "channels" && (
-              <Chennals isOpen={true} setOpen={() => {}} />
-            )}
-
-            {link.modal === "madefor" && (
-              <Madefor isOpen={true} setOpen={() => {}} />
-            )}
-
-            {link.modal === "resources" && (
-              <Resources isOpen={true} setOpen={() => {}} />
-            )}
-
+            <div className="pt-3 pb-2">
+              <Link
+                to="/login"
+                onClick={() => setMobileOpen(false)}
+                className="block w-full text-center rounded-xl bg-blue-600 py-3 text-sm font-semibold text-white hover:bg-blue-700 transition"
+              >
+                Log in
+              </Link>
+            </div>
           </div>
-        )}
-      </div>
-    ))}
-
-    {/* LOGIN BUTTON */}
-    <Link
-      to="/login"
-      onClick={() => setMobileOpen(false)}
-      className="block mt-4 text-center bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 transition"
-    >
-      Log in
-    </Link>
-  </div>
-)}
+        </div>
+      )}
     </header>
   );
 };

@@ -264,9 +264,9 @@ const Hero = () => {
             key={items.name}
             href={items.link}
             data-theme={items.theme} 
-            className="flex items-center gap-3 px-5 py-3 rounded-xl border border-black bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+            className="flex items-center gap-3 transition hover:bg-gray-100 px-5 py-3 rounded-xl border border-black bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
           >
-            <span className="w-10 h-10 text-xl" style={{ color: "var(--theme-color)" }}>
+            <span className="w-10 h-10 text-xl " style={{ color: "var(--theme-color)" }}>
               {items.icon}
             </span>
              {/* <span className="text-sm font-medium text-gray-700">{items.name}</span>              */}
@@ -318,7 +318,7 @@ const Hero = () => {
   {/* Right Side: Video + Floating Images */}
   <div className='w-full lg:w-1/2 flex justify-center'>
     {/* This relative div is the "anchor" for the absolute images */}
-    <div className='relative w-full max-w-[400px]'>
+    <div className='relative w-full max-w-[300px]'>
       
       {/* Floating Image 1 (Top Left) */}
       <img 
