@@ -1,1 +1,1 @@
-console.log(:"ss")
+console.log("hello world ")
