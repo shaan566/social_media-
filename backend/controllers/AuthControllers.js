@@ -10,6 +10,7 @@ import createDOMPurify from "isomorphic-dompurify"
 import { genrateOtp } from "../services/otpService.js"
 import { sendEmail } from "../services/emailService.js"
 import AUTH_CONFIG from "../config/auth.config.js"
+import {generateOtpEmail} from "../utils/emailtemplate.js"
 
 const window = new JSDOM("").window
 const DOMPurify = createDOMPurify(window)
@@ -344,12 +345,7 @@ export const signup = async (req, res) => {
      await sendEmail({
       email: email,
       subject: "Verify your account - OTP",
-      message: `
-        <h2>Welcome to Social media app </h2>
-        <p>Your OTP is:</p>
-        <h1>${Otp}</h1>
-        <p>Valid for 10 minutes</p>
-      `,
+      message: generateOtpEmail(email, Otp)
     })
     // 🔐 Remove sensitive fields from response
     user.password = undefined;
@@ -510,12 +506,7 @@ export const resendOtp = async (req, res) => {
     await sendEmail({
       email,
       subject: "Resend OTP - Verify your account",
-      message: `
-        <h2>OTP Verification</h2>
-        <p>Your new OTP is:</p>
-        <h1>${otp}</h1>
-        <p>Valid for 10 minutes</p>
-      `,
+      message: generateOtpEmail(email,otp)
     });
 
     return res.status(200).json({
@@ -564,11 +555,7 @@ export const forgotPassword = async (req, res) => {
     await sendEmail({
       email,
       subject: "Reset Password OTP",
-      message: `
-        <h2>Password Reset</h2>
-        <h1>${otp}</h1>
-        <p>Valid for 5 minutes</p>
-      `,
+      message: generateOtpEmail(email,otp)
     })
 
     return res.status(200).json({ success: true, message: "OTP sent to email" })

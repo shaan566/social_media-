@@ -34,7 +34,7 @@ export const sendEmail = async (options) => {
 
   try {
     const result = await resend.emails.send({
-      from: "Social Media App <onboarding@resend.dev>", // ← free default, no domain needed
+      from: "Schedly <onboarding@resend.dev>", // ← free default, no domain needed
       to: options.email,
       subject: options.subject,
       html: options.message,
