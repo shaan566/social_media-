@@ -341,16 +341,16 @@ export const signup = async (req, res) => {
 
      console.log("User created successfully:", user.id)
 
-    //  await sendEmail({
-    //   email: email,
-    //   subject: "Verify your account - OTP",
-    //   message: `
-    //     <h2>Welcome to Social media app </h2>
-    //     <p>Your OTP is:</p>
-    //     <h1>${Otp}</h1>
-    //     <p>Valid for 10 minutes</p>
-    //   `,
-    // })
+     await sendEmail({
+      email: email,
+      subject: "Verify your account - OTP",
+      message: `
+        <h2>Welcome to Social media app </h2>
+        <p>Your OTP is:</p>
+        <h1>${Otp}</h1>
+        <p>Valid for 10 minutes</p>
+      `,
+    })
     // 🔐 Remove sensitive fields from response
     user.password = undefined;
 
