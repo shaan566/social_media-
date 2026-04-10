@@ -123,7 +123,7 @@ const Hero = () => {
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-20">
        
         <div className="max-w-4xl mx-auto text-center space-y-8">
-              <div className>
+              <div className = "hidden md:block">
                    <FloatingDecorations side="both" />
               </div>
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black leading-tight">
