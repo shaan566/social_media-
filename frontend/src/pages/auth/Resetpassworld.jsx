@@ -1,371 +1,226 @@
-import React from 'react'
-import { useState} from 'react'
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa"
+import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { MdOutlineMailOutline } from "react-icons/md";
-import { useNavigate } from 'react-router-dom';
-import { GoLock } from "react-icons/go"
-import FloatingDecorations from "./../../common/FloatingDecorations";
-import { forgotPassword , verifyOtp, resetPassword , resendOtp} from './../../services/authServices';
-import { useRef } from 'react';
+import { GoLock } from "react-icons/go";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { forgotPassword, verifyOtp, resetPassword, resendOtp } from "./../../services/authServices";
 
-const Resetpassworld = () => {
-    const [email, setEmail] = useState('');
-    const [error, seterror] = useState("")
-    const [step , setstep] = useState(1)
-    const [otp,setotp] = useState(new Array(6).fill(""))
-    const inputRefs = useRef([])
-    const [isloading, setisloading] = useState(false)
-    const navigate = useNavigate();
-    const [newPassword, setNewPassword] = useState("");
-const [confirmPassword, setConfirmPassword] = useState("");
+export default function ResetPassword() {
+  const navigate = useNavigate();
+  const [step, setStep] = useState(1);
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState(new Array(6).fill(""));
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPw, setShowPw] = useState(false);
+  const [showCPw, setShowCPw] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const inputRefs = useRef([]);
 
-const [showPassword, setShowPassword] = useState(false);
-const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const handleOtpChange = (element, index) => {
+    if (isNaN(element.value)) return;
+    const newOtp = [...otp];
+    newOtp[index] = element.value;
+    setOtp(newOtp);
+    if (element.value !== "" && index < 5)
+      inputRefs.current[index + 1]?.focus();
+  };
 
-const togglePasswordVisibility = () =>
-  setShowPassword((prev) => !prev);
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0)
+      inputRefs.current[index - 1]?.focus();
+  };
 
-const toggleConfirmPasswordVisibility = () =>
-  setShowConfirmPassword((prev) => !prev);
-    
-    const handleChange = (element, index) => {
-  if (isNaN(element.value)) return;
-
-  const newOtp = [...otp];
-  newOtp[index] = element.value;
-  setotp(newOtp);
-
-  if (element.value !== "" && index < 5) {
-    inputRefs.current[index + 1]?.focus();
-  }
-};
-
-const handleKeyDown = (e, index) => {
-  if (e.key === "Backspace" && !otp[index] && index > 0) {
-    inputRefs.current[index - 1]?.focus();
-  }
-};
-
-  const handleSendotp = async () => {
-  try {
-    seterror("");
-
-    setisloading(true)
-    if (!email) {
-      return seterror("Please enter your email");
+  const handleSendOtp = async () => {
+    setError("");
+    if (!email) return setError("Please enter your email");
+    try {
+      setIsLoading(true);
+      await forgotPassword({ email });
+      setStep(2);
+    } catch (err) {
+      setError(err.response?.data?.message || "Error sending OTP");
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    await forgotPassword({
-      email: email
-    });
-    setstep(2)  
-
-
-    alert("OTP sent to your email")
-
-  } catch (err) {
-    console.log(err);
-    seterror(err.response?.data?.message || "Something went wrong");
-  }
-   finally{
-    setisloading(false)
-  }
-};
-
-const handleVerifyOtp = async () => {
-
-  try{
-
-    seterror("")
-    setisloading(true)
-
-    if(!otp) return seterror("Please Enter OTP ")
-
+  const handleVerifyOtp = async () => {
     const otpValue = otp.join("");
-    // console.log("otp",otpValue)
-    if (otpValue.length !== 6) {
-      return seterror("Please enter complete 6-digit OTP");
+    if (otpValue.length !== 6)
+      return setError("Enter complete OTP");
+    try {
+      setIsLoading(true);
+      await verifyOtp({ email, otp: otpValue });
+      setStep(3);
+    } catch (err) {
+      setError("Invalid OTP");
+    } finally {
+      setIsLoading(false);
     }
-    await verifyOtp({
-      email:email,
-      otp:otpValue
-    }) 
-    setstep(3)
-  }catch(err){
-    console.log(err)
-     seterror(err.response?.data?.message || "Invalid OTP")
-  }finally{
-    setisloading(false)
-  }
-}
+  };
 
-const handleResetPassword = async () => {
-  try {
-    seterror("");
-    setisloading(true)
-
-    if (!newPassword || !confirmPassword) {
-      return seterror("Both password fields are required");
+  const handleResetPassword = async () => {
+    if (newPassword !== confirmPassword)
+      return setError("Passwords do not match");
+    try {
+      setIsLoading(true);
+      await resetPassword({ email, password: newPassword });
+      navigate("/login");
+    } catch (err) {
+      setError("Reset failed");
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    if (newPassword !== confirmPassword) {
-      return seterror("Passwords do not match");
+  const handleResendOtp = async () => {
+    try {
+      await resendOtp({ email });
+      setOtp(new Array(6).fill(""));
+    } catch {
+      setError("Resend failed");
     }
+  };
 
-    await resetPassword({
-      email,
-      password: newPassword,
-    });
+  const filledOtp = otp.filter((v) => v !== "").length;
 
-    alert("Password reset successful");
-    navigate("/login");
-
-  } catch (err) {
-    console.log(err);
-    seterror(err.response?.data?.message || "Password reset failed");
-  }
-  finally{
-    setisloading(false)
-  }
-};
-
-const handleResendOtp = async () => {
-  try {
-    seterror("");
-
-    
-    const storedEmail = localStorage.getItem("otpEmail");
-    if (!storedEmail) return seterror("Email not found. Please signup again.");
-
-    // Only resend OTP, do NOT send old otpValue
-    await resendOtp({ email: storedEmail });
-
-    // Reset input fields
-    // ✅ Clear OTP (force new reference)
-    setotp(() => ["", "", "", "", "", ""]);
-
-    // ✅ Delay focus slightly (VERY IMPORTANT)
-    setTimeout(() => {
-      inputRefs.current[0]?.focus();
-    }, 0);
-
-    alert("New OTP sent to your email");
-  } catch (err) {
-    seterror(err.response?.data?.message || "Failed to resend OTP");
-  }
-  
-};
-
-
-return (
-  <div className="min-h-screen flex items-center justify-center px-4">
-    <div className="flex flex-col items-center gap-6 w-full max-w-md">
-
-      {/* TITLE */}
-      <h1 className="text-black text-3xl font-semibold">
-        {step === 1 && "Reset your password"}
-        {step === 2 && "Verify OTP"}
-        {step === 3 && "Set New Password"}
+  return (
+    <div className="min-h-screen flex justify-center pt-[70px] bg-green-300">
+      {/* Left */}
+      {/* Card */}
+    <div className="w-full  h-full max-w-md max-h-md  bg-white rounded-3xl shadow-xl p-8">
+      
+      <h1 className="text-2xl font-extrabold mb-6 text-center">
+        Schedly
       </h1>
 
-      {/* SUBTITLE */}
-      <p className="text-gray-600 text-center">
-        {step === 1 && "Enter your email address and we'll send you an OTP."}
-        {step === 2 && "Enter the OTP sent to your email."}
-        {step === 3 && "Create a new password for your account."}
+      {/* Step Bar */}
+      <div className="flex gap-2 mb-6">
+        {[1, 2, 3].map((n) => (
+          <div
+            key={n}
+            className={`flex-1 h-1 rounded ${
+              n <= step ? "bg-black" : "bg-gray-200"
+            }`}
+          />
+        ))}
+      </div>
+
+      <h2 className="text-2xl font-bold mb-2 text-center">
+        {step === 1 && "Reset password"}
+        {step === 2 && "Enter OTP"}
+        {step === 3 && "New password"}
+      </h2>
+
+      <p className="text-gray-600 mb-6 text-sm text-center">
+        {step === 1 && "Enter your email"}
+        {step === 2 && `OTP sent to ${email}`}
+        {step === 3 && "Set a new password"}
       </p>
-
-      {/* CARD */}
-      <div className="flex flex-col gap-4 w-full">
-
-        {/* STEP 1 – EMAIL */}
+        {/* Step 1 */}
         {step === 1 && (
           <>
-            <label className="label">Email</label>
-            <div className="relative">
-              <MdOutlineMailOutline
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600"
-                size={25}
-              />
+            <div className="relative mb-4">
+              <MdOutlineMailOutline className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
                 type="email"
-                placeholder="Enter your email"
-                className="border border-gray-300 rounded-md p-2 px-10 w-full"
+                placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:border-black"
               />
             </div>
-
-            <button 
-            className={`bg-blue-500 h-full w-full text-white rounded-md p-2 mt-4 text-xl
-            ${isloading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"}`}
-              diabled = {isloading}
-              onClick={handleSendotp}
+            <button
+              onClick={handleSendOtp}
+              className="w-full py-3 bg-green-300 border-2 border-black rounded-lg font-bold"
             >
-              {isloading ? "Sending..." : "Send OTP"}
-              
+              {isLoading ? "Sending..." : "Send OTP"}
             </button>
           </>
         )}
 
-        {/* STEP 2 – OTP */}
+        {/* Step 2 */}
         {step === 2 && (
           <>
-            {step === 2 && (
-              <div className="flex flex-col items-center gap-6">
-{/* 
-                <h1 className="text-black text-3xl font-semibold">
-                  Enter OTP
-                </h1> */}
-
-                {/* <p className="text-gray-600 text-center max-w-sm">
-                  Please enter the One-Time Password (OTP) sent to your email address.
-                </p> */}
-
-                <div className="flex flex-col gap-4 items-center">
-                  <label className="text-black text-lg font-medium">
-                    OTP Code
-                  </label>
-
-                  <div className="flex gap-3">
-                    {otp.map((data, index) => (
-                      <input
-                        key={index}
-                        type="text"
-                        maxLength="1"
-                        ref={(el) => (inputRefs.current[index] = el)}
-                        value={data}
-                        onChange={(e) => handleChange(e.target, index)}
-                        onKeyDown={(e) => handleKeyDown(e, index)}
-                        className="w-12 h-14 border-2 border-gray-300 rounded-lg text-center text-2xl font-bold text-black focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
-                      />
-                    ))}
-                  </div>
-
-                  <button
-                    onClick={handleResendOtp}
-                    className="text-blue-500 hover:underline self-end"
-                  >
-                    Resend OTP
-                  </button>
-                </div>
-
-                <button 
-            disabled = {isloading}
-            onClick={handleVerifyOtp}
-            className={`bg-blue-500 h-full w-50 text-white rounded-md p-2 mt-4 text-xl
-            ${isloading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"}`}
+            <div className="flex gap-2 mb-4">
+              {otp.map((d, i) => (
+                <input
+                  key={i}
+                  maxLength="1"
+                  value={d}
+                  ref={(el) => (inputRefs.current[i] = el)}
+                  onChange={(e) => handleOtpChange(e.target, i)}
+                  onKeyDown={(e) => handleKeyDown(e, i)}
+                  className="w-12 h-14 text-center border-2 rounded-lg"
+                />
+              ))}
+            </div>
+            <button
+              onClick={handleVerifyOtp}
+              disabled={filledOtp < 6}
+              className="w-full py-3 bg-green-300 border-2 border-black rounded-lg font-bold disabled:opacity-50"
             >
-            {isloading ? "Validating..." : "Validate OTP" }
+              Verify OTP
             </button>
-
-                {error && (
-                  <p className="text-red-600 text-sm text-center">
-                    {error}
-                  </p>
-                )}
-              </div>
-            )}
+            <button onClick={handleResendOtp} className="mt-3 underline text-sm">
+              Resend OTP
+            </button>
           </>
         )}
 
-        {/* STEP 3 – PASSWORD */}
-       {step === 3 && (
+        {/* Step 3 */}
+        {step === 3 && (
           <>
-            {/* <h1 className="text-black text-3xl font-semibold">
-              Reset Password
-            </h1>
-
-            <p className="text-gray-600 text-center">
-              Enter your new password and confirm it below.
-            </p> */}
-
-            {/* New Password */}
-            <label className="label">New Password</label>
-            <div className="relative">
-              <GoLock className="absolute left-3 top-2.5 text-gray-600" size={20} />
+            <div className="relative mb-4">
+              <GoLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter new password"
-                className="border border-gray-300 rounded-md p-2 px-10 w-full"
+                type={showPw ? "text" : "password"}
+                placeholder="New password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full pl-10 pr-10 py-3 border-2 border-gray-200 rounded-lg"
               />
-              <span
-                onClick={togglePasswordVisibility}
-                className="absolute right-3 top-2.5 cursor-pointer text-gray-600"
+              <button
+                onClick={() => setShowPw(!showPw)}
+                className="absolute right-3 top-1/2 -translate-y-1/2"
               >
-                {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
-              </span>
+                {showPw ? <FaRegEyeSlash /> : <FaRegEye />}
+              </button>
             </div>
 
-            {/* Confirm Password */}
-            <label className="label">Confirm Password</label>
-            <div className="relative">
-              <GoLock className="absolute left-3 top-2.5 text-gray-600" size={20} />
+            <div className="relative mb-4">
+              <GoLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
-                type={showConfirmPassword ? "text" : "password"}
-                placeholder="Confirm your password"
-                className="border border-gray-300 rounded-md p-2 px-10 w-full"
+                type={showCPw ? "text" : "password"}
+                placeholder="Confirm password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full pl-10 pr-10 py-3 border-2 border-gray-200 rounded-lg"
               />
-              <span
-                onClick={toggleConfirmPasswordVisibility}
-                className="absolute right-3 top-2.5 cursor-pointer text-gray-600"
+              <button
+                onClick={() => setShowCPw(!showCPw)}
+                className="absolute right-3 top-1/2 -translate-y-1/2"
               >
-                {showConfirmPassword ? <FaRegEyeSlash /> : <FaRegEye />}
-              </span>
+                {showCPw ? <FaRegEyeSlash /> : <FaRegEye />}
+              </button>
             </div>
 
-            {error && (
-              <p className="text-red-500 text-sm">{error}</p>
-            )}
-
             <button
-            diabled = {setisloading}
-              className={`bg-blue-500 h-full w-full text-white rounded-md p-2 mt-4 text-xl
-            ${isloading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"}`}
               onClick={handleResetPassword}
+              
+              className="w-full py-3 bg-green-300 border-2 border-black rounded-lg font-bold"
             >
-              {isloading ? "Verifying OTP..." : "Confirm OTP"}
+              Reset Password
             </button>
           </>
         )}
 
-
-        {/* ERROR */}
-        {error && (
-          <p className="text-red-600 text-sm text-center">{error}</p>
-        )}
-
-        {/* BACK TO LOGIN */}
-        {step === 1 && (
-          <div className="flex justify-center mt-6">
-            <h3 className="text-gray-600">
-              Remember your password?{" "}
-              <span
-                className="text-blue-500 hover:underline cursor-pointer"
-                onClick={() => navigate("/login")}
-              >
-                Back to login
-              </span>
-            </h3>
-          </div>
-        )}
+        {error && <p className="text-red-500 text-sm mt-3">{error}</p>}
       </div>
 
-      {/* DECORATION */}
-      <div className="hidden md:block">
-        <FloatingDecorations side="both" />
-      </div>
+      
     </div>
-  </div>
-);
-
-
-    
-  
+  );
 }
-
-export default Resetpassworld

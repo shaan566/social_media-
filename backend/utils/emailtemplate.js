@@ -7,7 +7,7 @@ export const generateOtpEmail = (email, otp) => {
     <!DOCTYPE html>
     <html>
     <head>
-      <meta charset="UTF-8" />
+      <meta charset="UTF-8" /
     </head>
     <body style="margin:0; padding:0; background-color:#0f0f1a; font-family:Arial, sans-serif;">
       <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#FFFFFF; padding:40px 20px;">

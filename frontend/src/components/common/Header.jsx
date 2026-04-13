@@ -59,11 +59,13 @@ const Header = () => {
       <div className="mx-auto flex h-16 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
 
         {/* Logo */}
+        
         <Link
           to="/"
           className="mr-auto text-xl font-bold tracking-tight text-gray-900 shrink-0"
         >
-          Schedly.
+        <span className="text-[20px] font-bold leading-[56px] text-blue-600">S</span>
+        chedly.
         </Link>
 
         {/* Desktop nav pill */}

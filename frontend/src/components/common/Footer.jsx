@@ -1,82 +1,179 @@
-import React from "react";
-
-import { FaLinkedin } from "react-icons/fa";
-import { FaSquareInstagram } from "react-icons/fa6";
-import { ImGithub } from "react-icons/im";
 import { RiTwitterXFill } from "react-icons/ri";
+import { FaLinkedin, FaInstagram } from "react-icons/fa";
 import { Link } from "react-router-dom";
+
+const footerLinks = [
+  {
+    heading: "Features",
+    links: [
+      { label: "Schedule Posts", to: "/schedule" },
+      { label: "AI Captions", to: "/ai-captions" },
+      { label: "Analytics", to: "/analytics" },
+      { label: "Content Calendar", to: "/calendar" },
+      { label: "Team & Agencies", to: "/teams" },
+    ],
+  },
+  {
+    heading: "Platforms",
+    links: [
+      { label: "Instagram", to: "/platforms/instagram" },
+      { label: "LinkedIn", to: "/platforms/linkedin" },
+      { label: "Twitter / X", to: "/platforms/twitter" },
+      { label: "Facebook", to: "/platforms/facebook" },
+      { label: "YouTube", to: "/platforms/youtube" },
+    ],
+  },
+  {
+    heading: "Made for",
+    links: [
+      { label: "Small Businesses", to: "/for/small-business" },
+      { label: "Freelancers", to: "/for/freelancers" },
+      { label: "Agencies", to: "/for/agencies" },
+      { label: "Creators", to: "/for/creators" },
+      { label: "Startups", to: "/for/startups" },
+    ],
+  },
+  {
+    heading: "Resources",
+    links: [
+      { label: "Blog", to: "/blog" },
+      { label: "Help Center", to: "/help" },
+      { label: "API Docs", to: "/docs" },
+      { label: "Changelog", to: "/changelog" },
+      { label: "Request a Feature", to: "/feedback" },
+    ],
+  },
+  // {
+  //   heading: "Company",
+  //   links: [
+  //     { label: "About", to: "/about" },
+  //     { label: "Careers", to: "/careers" },
+  //     { label: "Partner Program", to: "/partners" },
+  //     { label: "Press", to: "/press" },
+  //     { label: "Legal", to: "/legal" },
+  //   ],
+  // },
+];
+
+const socialLinks = [
+  {
+    label: "Twitter / X",
+    href: "https://x.com/ch60868207",
+    icon: <RiTwitterXFill size={18} />,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/shaan510/",
+    icon: <FaLinkedin size={18} />,
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/learn_code147/",
+    icon: <FaInstagram size={18} />,
+  },
+];
 
 const Footer = () => {
   return (
-    <div>
-       <footer className="px-6 md:px-16 lg:px-24 xl:px-32 pt-8 w-full rounded-t-4xl bg-green-300">
-            <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-500/30 pb-6">
-                 <div className="flex flex-col items-center md:flex-row justify-between space-y-6 md:space-y-0 -translate-y-5">
-                              <div className="space-y-2">
-                                <ul className="flex space-x-5">
-                                  <li>
-                                    <a href="https://x.com/ch60868207" target="_blank" rel="noopener noreferrer">
-                                      <div className="rounded-full bg-white p-3 ">
-                                        <RiTwitterXFill size={24} />
-                                      </div>
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="https://www.linkedin.com/in/shaan510/" target="_blank" rel="noopener noreferrer">
-                                      <div className="rounded-full bg-white p-3 ">
-                                        <FaLinkedin size={24} />
-                                      </div>
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="https://www.instagram.com/learn_code147/?hl=en" target="_blank" rel="noopener noreferrer">
-                                      <div className="rounded-full bg-white p-3 ">
-                                        <FaSquareInstagram size={24} />
-                                      </div>
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="https://github.com/shaan566" target="_blank" rel="noopener noreferrer">
-                                      <div className="rounded-full bg-white p-3 ">
-                                        <ImGithub size={24} />
-                                      </div>
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                <div className="flex-1 flex items-start text-black md:justify-end gap-20">
-                    <div>
-                        <h2 className="font-semibold mb-5">Company</h2>
-                        <ul className="text-m space-y-2">
-                            <li><Link to="/features">Features</Link></li>
-                            <li><Link to="/channels">Channels</Link></li>
-                            <li><Link to="/resources">Resources</Link></li>
-                            <li><Link to="/messages">Messages</Link></li>
-                            <li><Link to="/">Privacy policy</Link></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h2 className="font-semibold  mb-5">Subscribe to our newsletter</h2>
-                        <div className="text-m space-y-2">
-                            <p>The latest news, articles, and resources, sent to your inbox weekly.</p>
-                            <div className="flex items-center gap-2 pt-4">
-                                <input className="border border-gray-500/30 placeholder-gray-500 focus:ring-2 ring-indigo-600 outline-none w-full max-w-64 h-9 rounded px-2" type="email" placeholder="Enter your email" />
-                                <button className="bg-blue-600 w-24 h-9 text-black rounded">Subscribe</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <p className="pt-4 text-center  text-black text-xs md:text-m pb-5">
-                 Made in India ❤️ <br/>
-                 {new Date().getFullYear()} All Right Reserved.
+    <footer className="bg-[#1f2e2e]  text-white pt-16 pb-8 px-6 md:px-16 lg:px-24 xl:px-32">
 
+      {/* Top row: Brand + Newsletter */}
+      <div className="flex flex-col lg:flex-row justify-between gap-12 pb-12 border-b border-white/10">
+
+        {/* Brand block */}
+        <div className="flex flex-col gap-5 max-w-xs">
+          <div>
+            <span className="text-2xl font-black tracking-tight text-white">
+              S<span className="text-emerald-400">chedly</span>
+            </span>
+            <p className="mt-3 text-sm text-white/50 leading-relaxed">
+              Schedule smarter. Grow faster. Built for Indian businesses who
+              take social media seriously.
             </p>
-            
-        </footer>
-    </div>
-  )
-}
+          </div>
 
-export default Footer
+          {/* Social icons */}
+          <div className="flex items-center gap-3">
+            {socialLinks.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                className="w-9 h-9 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/60 hover:text-emerald-400 hover:border-emerald-400/40 hover:bg-emerald-400/10 transition-all duration-200"
+              >
+                {s.icon}
+              </a>
+            ))}
+          </div>
+
+          {/* India badge */}
+          <div className="inline-flex items-center gap-2 text-xs text-white/40 font-medium">
+            <span className="text-base">🇮🇳</span>
+            Made with love in India
+          </div>
+        </div>
+
+        {/* Newsletter */}
+        <div className="max-w-sm w-full">
+          <h3 className="text-sm font-semibold text-white mb-1 tracking-wide uppercase">
+            Stay in the loop
+          </h3>
+          <p className="text-sm text-white/45 mb-4 leading-relaxed">
+            Social media tips, platform updates, and product news — in your
+            inbox every week.
+          </p>
+          <div className="flex gap-2">
+            <input
+              type="email"
+              placeholder="you@example.com"
+              className="flex-1 min-w-0 h-10 px-3 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:border-emerald-400/40 transition-all"
+            />
+            <button className="h-10 px-5 rounded-lg bg-emerald-400 text-[#0A0A0F] text-sm font-semibold hover:bg-emerald-300 active:scale-95 transition-all whitespace-nowrap">
+              Subscribe
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Middle: Link columns */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-10 py-12 border-b border-white/10">
+        {footerLinks.map((group) => (
+          <div key={group.heading}>
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">
+              {group.heading}
+            </h3>
+            <ul className="space-y-2.5">
+              {group.links.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.to}
+                    className="text-sm text-white/55 hover:text-emerald-400 transition-colors duration-150"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      {/* Bottom row */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 text-xs text-white/30">
+        <p>© {new Date().getFullYear()} Schedly. All rights reserved.</p>
+        <div className="flex items-center gap-5">
+          <Link to="/legal#privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
+          <span className="text-white/15">|</span>
+          <Link to="/legal#terms" className="hover:text-white/60 transition-colors">Terms</Link>
+          <span className="text-white/15">|</span>
+          <Link to="/legal#security" className="hover:text-white/60 transition-colors">Security</Link>
+        </div>
+      </div>
+
+    </footer>
+  );
+};
+
+export default Footer;
