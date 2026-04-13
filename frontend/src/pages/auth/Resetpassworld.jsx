@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef , useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { GoLock } from "react-icons/go";
@@ -17,6 +17,29 @@ export default function ResetPassword() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const inputRefs = useRef([]);
+   const [timeleft , setTimeLeft] = useState(600)
+
+     useEffect(() => {
+     const timer = setInterval(() => {
+       setTimeLeft((prev) => {
+         if (prev <= 1) {
+           clearInterval(timer);
+           return 0;
+         }
+         return prev - 1;
+       });
+     }, 1000);
+   
+     return () => clearInterval(timer);
+   }, []);
+
+    const formatTime = (seconds) => {
+    const min = Math.floor(seconds / 60);
+    const sec = seconds % 60;
+
+    return `${min}:${sec < 10 ? "0" : ""}${sec}`;
+  };
+
 
   const handleOtpChange = (element, index) => {
     if (isNaN(element.value)) return;
@@ -116,7 +139,7 @@ export default function ResetPassword() {
 
       <p className="text-gray-600 mb-6 text-sm text-center">
         {step === 1 && "Enter your email"}
-        {step === 2 && `OTP sent to ${email}`}
+        {step === 2 && "We've sent an OTP to your email. Please check your inbox or spam folder."}
         {step === 3 && "Set a new password"}
       </p>
         {/* Step 1 */}
@@ -157,6 +180,15 @@ export default function ResetPassword() {
                 />
               ))}
             </div>
+            
+        <p className="text-sm mt-2 text-gray-600 text-center">
+  {timeleft > 0 ? (
+    <>OTP expires in <span className="font-bold">{formatTime(timeleft)}</span></>
+  ) : (
+    <span className="text-red-500 font-bold">OTP Expired ❌</span>
+  )}
+</p>
+            
             <button
               onClick={handleVerifyOtp}
               disabled={filledOtp < 6}

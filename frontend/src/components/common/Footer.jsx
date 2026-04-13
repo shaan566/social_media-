@@ -83,8 +83,8 @@ const Footer = () => {
         {/* Brand block */}
         <div className="flex flex-col gap-5 max-w-xs">
           <div>
-            <span className="text-2xl font-black tracking-tight text-white">
-              S<span className="text-emerald-400">chedly</span>
+            <span className="text-2xl font-black tracking-tight text-blue-600">
+              S<span className="text-black">chedly</span>
             </span>
             <p className="mt-3 text-sm text-white/50 leading-relaxed">
               Schedule smarter. Grow faster. Built for Indian businesses who
@@ -101,7 +101,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.label}
-                className="w-9 h-9 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/60 hover:text-emerald-400 hover:border-emerald-400/40 hover:bg-emerald-400/10 transition-all duration-200"
+                className="w-9 h-9 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/60 hover:text-blue-600 hover:border-blue-600/40 hover:bg-blue-600/10 transition-all duration-200"
               >
                 {s.icon}
               </a>
@@ -128,9 +128,9 @@ const Footer = () => {
             <input
               type="email"
               placeholder="you@example.com"
-              className="flex-1 min-w-0 h-10 px-3 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:border-emerald-400/40 transition-all"
+              className="flex-1 min-w-0 h-10 px-3 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-blue-600/50 focus:border-blue-600/40 transition-all"
             />
-            <button className="h-10 px-5 rounded-lg bg-emerald-400 text-[#0A0A0F] text-sm font-semibold hover:bg-emerald-300 active:scale-95 transition-all whitespace-nowrap">
+            <button className="h-10 px-5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-emerald-300 active:scale-95 transition-all whitespace-nowrap">
               Subscribe
             </button>
           </div>
@@ -149,7 +149,7 @@ const Footer = () => {
                 <li key={link.label}>
                   <Link
                     to={link.to}
-                    className="text-sm text-white/55 hover:text-emerald-400 transition-colors duration-150"
+                    className="text-sm text-white/55 hover:text-blue-600 transition-colors duration-150"
                   >
                     {link.label}
                   </Link>
