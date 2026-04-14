@@ -1,0 +1,20 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo "Checking files..."
+      - ls -la
+      - echo "Going into backend folder..."
+      - cd backend
+      - ls -la
+      - echo "Installing dependencies..."
+      - npm install
+
+  build:
+    commands:
+      - echo "Build completed successfully"
+
+artifacts:
+  files:
+    - '**/*'
