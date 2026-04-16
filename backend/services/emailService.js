@@ -111,7 +111,7 @@ export const sendEmail = async (options) => {
     await transporter.verify()
 
     const mailOptions = {
-      from: `EventzUs <${process.env.EMAIL_USER}>`,
+      from: `Schedly <${process.env.EMAIL_USER}>`,
       to: options.email,
       subject: options.subject,
       html: options.message,
