@@ -1,5 +1,5 @@
 import React, { useState, useRef , useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link} from "react-router-dom";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { GoLock } from "react-icons/go";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
@@ -115,9 +115,13 @@ export default function ResetPassword() {
       {/* Card */}
     <div className="w-full  h-full max-w-md max-h-md  bg-white rounded-3xl shadow-xl p-8">
       
-      <h1 className="text-2xl font-extrabold mb-6 text-center">
-        Schedly
-      </h1>
+       <Link
+                        to="/"
+                        className="mr-auto text-xl font-bold tracking-tight text-gray-900 shrink-0"
+                      >
+                      <span className="text-[40px] font-bold leading-[56px] text-blue-600">S</span>
+                      chedly.
+                      </Link>
 
       {/* Step Bar */}
       <div className="flex gap-2 mb-6">

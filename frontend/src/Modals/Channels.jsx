@@ -40,7 +40,7 @@ const Channels = () => (
       Supported channels
     </p>
 
-    <div className="grid grid-cols-3 gap-1">
+    <div className="grid grid-cols-3 md:grid-cols-3 gap-1">
       {Social_icon.map((item) => (
         <a
           key={item.name}

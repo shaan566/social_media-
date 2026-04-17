@@ -64,7 +64,7 @@ const Header = () => {
           to="/"
           className="mr-auto text-xl font-bold tracking-tight text-gray-900 shrink-0"
         >
-        <span className="text-[20px] font-bold leading-[56px] text-blue-600">S</span>
+        <span className="text-[40px] font-bold leading-[56px] text-blue-600">S</span>
         chedly.
         </Link>
 

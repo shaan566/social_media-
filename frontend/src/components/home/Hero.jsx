@@ -352,21 +352,20 @@ const Hero = () => {
   </div>
 
 
-  <div className="min-h-screen flex items-center justify-center px-4 py-8 font-sans">
-
-  {/* Card */}
+<div className="min-h-screen flex items-center justify-center px-4 py-8 font-sans">
+  {/* Card - Changed h-[500px] to min-h-[500px] and w-full to allow vertical growth */}
   <div
-    className="w-full max-w-7xl h-[500px] rounded-[2.5rem] border-[10px] border-white shadow-[0_32px_80px_rgba(0,0,0,0.18),0_8px_24px_rgba(0,0,0,0.1)] overflow-hidden transition-all duration-300"
+    className="w-full max-w-7xl min-h-[300px] rounded-[1.5rem] md:rounded-[2.5rem] border-[4px] md:border-[10px] border-white shadow-[0_32px_80px_rgba(0,0,0,0.18)] overflow-hidden transition-all duration-300"
     style={{ background: tab.bg }}
   >
 
-    {/* Tabs */}
-    <div className="flex gap-2 px-5 pt-5 justify-center flex-wrap">
+    {/* Tabs - Added flex-wrap and smaller padding for mobile */}
+    <div className="flex gap-2 px-3 md:px-5 pt-5 justify-center flex-wrap">
       {tabs.map((t, i) => (
         <button
           key={t.id}
           onClick={() => setActive(i)}
-          className={`px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 hover:-translate-y-[1px]
+          className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full text-[10px] md:text-xs font-semibold transition-all duration-200 
             ${i === active
               ? "text-white shadow-lg"
               : "bg-white/70 text-black/60"
@@ -383,22 +382,22 @@ const Hero = () => {
     {/* Divider */}
     <div className="h-[1px] bg-white/50 mx-5 mt-4" />
 
-    {/* Content */}
-    <div key={active} className="p-7 flex flex-col gap-6 animate-[fadeUp_0.3s_ease]">
+    {/* Content - Adjusted padding and gap for mobile */}
+    <div key={active} className="p-5 md:p-10 flex flex-col gap-6 animate-[fadeUp_0.3s_ease]">
 
-      {/* Headline */}
-      <div>
+      {/* Headline - Added responsive text sizes (text-3xl to text-7xl) */}
+      <div className="text-center md:text-left">
         {tab.headline.map((line, i) => (
           <h1
             key={i}
-            className={`text-5xl font-bold leading-tight tracking-tight ${
+            className={`text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold leading-tight tracking-tight ${
               i === tab.accentIndex ? "italic" : ""
             }`}
             style={{
               color:
                 i === tab.accentIndex
                   ? tab.headlineAccent
-                  : "rgba(0,0,0,0.78)",
+                  : "rgba(0,0,0,0.85)",
               fontFamily: "Playfair Display, serif",
             }}
           >
@@ -406,47 +405,31 @@ const Hero = () => {
           </h1>
         ))}
 
-        <p className="text-xl text-black/60 mt-3 leading-relaxed">
+        <p className="text-base md:text-xl text-black/60 mt-4 leading-relaxed max-w-2xl">
           {tab.sub}
         </p>
       </div>
 
-      {/* Features */}
-      <div className="flex flex-row gap-3">
+      {/* Features - CRITICAL: Changed flex-row to flex-col on mobile, flex-row on desktop */}
+      <div className="flex flex-col md:flex-row gap-3 mt-4">
         {tab.features.map((f) => (
           <div
             key={f.title}
-            className="flex gap-3 p-4 rounded-xl border border-white/80 bg-white/70 backdrop-blur-md hover:translate-x-1 transition-all"
+            className="flex items-start gap-3 p-4 rounded-xl border border-white/80 bg-white/70 backdrop-blur-md hover:translate-y-[-2px] md:hover:translate-x-1 transition-all"
           >
-            <span className="text-lg">{f.icon}</span>
+            <span className="text-xl">{f.icon}</span>
             <div>
-              <p className="text-sm font-semibold text-black/80">
+              <p className="text-sm font-bold text-black/80">
                 {f.title}
               </p>
-              <p className="text-xs text-black/50">
+              <p className="text-xs text-black/60 leading-snug">
                 {f.desc}
               </p>
             </div>
           </div>
         ))}
       </div>
-
-      {/* CTA */}
-      {/* <div className="flex items-center gap-3">
-        <button
-          className="flex-1 px-5 py-3 rounded-full text-sm font-semibold text-white hover:scale-[1.02] transition"
-          style={{ background: tab.tabActiveBg }}
-        >
-          Get started free →
-        </button>
-
-        <button className="px-5 py-3 rounded-full text-sm font-medium bg-white/60 border border-white/80 text-black/60 hover:bg-white/90 transition whitespace-nowrap">
-          See how it works
-        </button>
-      </div> */}
     </div>
-
-    
   </div>
 </div>
   <div className = "py-25"> 

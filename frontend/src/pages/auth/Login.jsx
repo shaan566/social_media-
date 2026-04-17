@@ -41,7 +41,13 @@ export default function Login() {
     <div className="min-h-screen flex bg-white font-sans">
       {/* Left Form */}
       <div className="w-full max-w-md flex flex-col justify-center px-8 lg:px-12">
-        <h1 className="text-2xl font-extrabold text-gray-900 mb-8">Schedly</h1>
+         <Link
+                  to="/"
+                  className="mr-auto text-xl font-bold tracking-tight text-gray-900 shrink-0"
+                >
+                <span className="text-[40px] font-bold leading-[56px] text-blue-600">S</span>
+                chedly.
+                </Link>
 
         <h2 className="text-3xl font-extrabold text-gray-900 mb-2">
           Log in

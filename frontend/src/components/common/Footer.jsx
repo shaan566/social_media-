@@ -75,7 +75,7 @@ const socialLinks = [
 
 const Footer = () => {
   return (
-    <footer className="bg-[#1f2e2e]  text-white pt-16 pb-8 px-6 md:px-16 lg:px-24 xl:px-32">
+    <footer className="bg-[#1f2e2e] rounded-t-4xl text-white pt-16 pb-8 px-6 md:px-16 lg:px-24 xl:px-32">
 
       {/* Top row: Brand + Newsletter */}
       <div className="flex flex-col lg:flex-row justify-between gap-12 pb-12 border-b border-white/10">
@@ -83,7 +83,7 @@ const Footer = () => {
         {/* Brand block */}
         <div className="flex flex-col gap-5 max-w-xs">
           <div>
-            <span className="text-2xl font-black tracking-tight text-blue-600">
+            <span className="text-4xl font-black tracking-tight text-blue-600">
               S<span className="text-black">chedly</span>
             </span>
             <p className="mt-3 text-sm text-white/50 leading-relaxed">
@@ -148,7 +148,7 @@ const Footer = () => {
               {group.links.map((link) => (
                 <li key={link.label}>
                   <Link
-                    to={link.to}
+                    // to={link.to}
                     className="text-sm text-white/55 hover:text-blue-600 transition-colors duration-150"
                   >
                     {link.label}
