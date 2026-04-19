@@ -10,7 +10,12 @@ import MainLayout from "./layouts/MainLayout";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SignUp from './pages/auth/SignUp.jsx';
 import Otp from './pages/auth/Otp.jsx';
+import Schedule from './pages/Schedule.jsx'
 import Dashboard from './pages/Dashboard.jsx'
+import Layout from "./components/common/Layout.jsx"
+import Analytics from './pages/Analytics.jsx'
+
+import Create from './pages/Create.jsx'
 
 
 
@@ -26,13 +31,19 @@ const App = () => {
       <Route path="/resources" element={<ComingSoon />} />
       <Route path="/madefor" element={<ComingSoon />} />
       <Route path="*" element={<ComingSoon />} />
-      <Route path="/dashboard" element= {<Dashboard/>} />
+      
     </Route>
     <Route>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/reset-password" element={<Resetpassworld />} />
       <Route path="/otp" element={<Otp />} />
+    </Route>
+    <Route element={<Layout />}>
+       <Route path="/create" element={<Create />} /> 
+       <Route path="/dashboard" element= {<Dashboard/>} />
+          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/analytics" element={<Analytics />} /> 
     </Route>
   </Routes>
 </BrowserRouter>

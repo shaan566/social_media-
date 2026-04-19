@@ -1,8 +1,8 @@
 import React from 'react'
 import { useState } from 'react';
 
-const Dashboard = () => {
-   const [activeTab, setActiveTab] = useState('queue');
+const Analytics = () => {
+ const [activeTab, setActiveTab] = useState('queue');
    const counts = { queue: 0, drafts: 0, approvals: 0, sent: 18 };
  
    return (
@@ -71,4 +71,5 @@ const Dashboard = () => {
      </div>
    );
  };
-export default Dashboard
+
+export default Analytics
