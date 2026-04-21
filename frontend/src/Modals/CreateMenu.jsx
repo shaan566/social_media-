@@ -1,6 +1,6 @@
 export default function CreateMenu() {
   return (
-    <div className="mt-2 w-64 bg-white rounded-xl shadow-lg border border-gray-200 z-50">
+    <div className="mt-2 w-auto  bg-white rounded-xl shadow-lg border border-gray-200 z-50">
 
       {/* Post */}
       <div className="flex items-start gap-3 p-3 hover:bg-gray-100 cursor-pointer">

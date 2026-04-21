@@ -27,7 +27,7 @@ const Sidebar = () => {
   const [openmenu, setOpenMenu] = useState(false)
 
   return (
-    <aside className={`h-screen sticky top-0 flex flex-col bg-white border-r border-gray-100 transition-all duration-200 ${open ? 'w-56' : 'w-14'}`}>
+    <aside className={`h-screen sticky top-0 flex flex-col  border-r border-gray-100 transition-all duration-200 ${open ? 'w-56' : 'w-14'}`}>
 <div className='flex flex-col'>
      <div className="flex items-center justify-between px-3 py-3 border-b border-gray-100">
   <Link to="/" className="mr-auto text-xl font-bold tracking-tight text-gray-900 shrink-0">

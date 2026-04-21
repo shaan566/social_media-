@@ -14,6 +14,7 @@ import Schedule from './pages/Schedule.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import Layout from "./components/common/Layout.jsx"
 import Analytics from './pages/Analytics.jsx'
+import Createideas from './Modals/Createideas.jsx'
 
 import Create from './pages/Create.jsx'
 
@@ -44,6 +45,7 @@ const App = () => {
        <Route path="/dashboard" element= {<Dashboard/>} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/analytics" element={<Analytics />} /> 
+          <Route path= "/createideas" element= {<Createideas/>} />
     </Route>
   </Routes>
 </BrowserRouter>
