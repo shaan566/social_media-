@@ -5,6 +5,7 @@ const Createideas = ({ title, ideas, onAdd, onNewIdea }) => {
     <div className="w-80 bg-gray-50 rounded-xl p-4 shadow-sm">
 
       {/* Header */}
+      
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <h3 className="text-sm font-semibold text-gray-800">

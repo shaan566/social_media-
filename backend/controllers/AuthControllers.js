@@ -294,7 +294,7 @@ export const logout = async (req, res) => {
 
 // Register a new user (OTP based)
 export const signup = async (req, res) => {
-  // console.log("Signup request body:", req.body);
+   console.log("Signup request body:", req.body);
   try {
     // ✅ Sanitize inputs
     const name = DOMPurify.sanitize(req.body.name, {

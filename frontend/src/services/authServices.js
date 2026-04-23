@@ -1,153 +1,69 @@
+import { post, get } from "../utils/apiClient"
 
-// import { post } from "../utils/apiClient"
-import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL 
-
-// console.log("Auth API URL:", API_URL)
-
+const API_URL = `/api/auth`
 
 export const registerUser = async (userData) => {
-  // console.log("Registering user with data:", userData);
+  console.log("shsh",userData)
   try {
-    
-    const response = await axios.post(`${API_URL}/api/auth/signup`, userData);
-    // console.log("testing",userData)
-    console.log("Register User Response:", response.data);
-    
-    return response.data;
+    return await post(`${API_URL}/signup`, userData)
+
   } catch (error) {
-    // fetch style error handling
-    if (error.status === 400) {
-      if (error.data.errors && Array.isArray(error.data.errors)) {
-        const errorMessages = error.data.errors.map(e => e.message).join(". ");
-        throw new Error(errorMessages);
-      }
-      throw new Error(error.data.message || "Invalid input");
-    }
-
-    if (error.status === 409) {
-      throw new Error("This email already exists.");
-    }
-
-    if (error.status >= 500) {
-      throw new Error("Server error. Please try again later.");
-    }
-
-    throw new Error(error.data?.message || "Registration failed. Please try again.");
+    throw new Error(error.message || "Registration failed. Please try again.")
   }
-};
-
-// Otp verify 
+}
 
 export const verifyOtp = async (userInfo) => {
-  console.log("Veriify",userInfo)
   try {
-    const response = await axios.post(
-      `${API_URL}/api/auth/verifyOtp`,
-      userInfo
-    );
-
-    return response.data;
+    return await post(`${API_URL}/verifyOtp`, userInfo)
   } catch (error) {
-    // Proper error handling
-    const message =
-      error.response?.data?.message ||
-      "OTP verification failed";
-
-    throw new Error(message);
+    throw new Error(error.message || "OTP verification failed")
   }
-};
+}
 
-
-export const logoutUser = async () => {
+export const resendOtp = async ({ email }) => {
   try {
-    return await axios.post(`${API_URL}/api/auth/logout`, {})
+    return await post(`${API_URL}/resendOtp`, { email })
   } catch (error) {
-    error.message
+    throw new Error(error.message || "Failed to resend OTP")
+  }
+}
+
+export const forgotPassword = async ({ email }) => {
+  try {
+    return await post(`${API_URL}/forgotPassword`, { email })
+  } catch (error) {
+    throw new Error(error.message || "Failed to send reset email")
+  }
+}
+
+export const resetPassword = async ({ email, password }) => {
+  try {
+    return await post(`${API_URL}/resetPassword`, { email, password })
+  } catch (error) {
+    throw new Error(error.message || "Failed to reset password")
+  }
+}
+
+export const loginUser = async (credentials) => {
+  try {
+    return await post(`${API_URL}/signin`, credentials)
+  } catch (error) {
+    throw new Error(error.message || "Login failed. Please try again.")
+  }
+}
+
+export const logoutUser = async (credentials) => {
+  try {
+    return await post(`${API_URL}/logout`, {})
+  } catch (error) {
     throw error
   }
 }
 
-
-
-export const resendOtp = async ({ email }) => {
-  // console.log("email",email)
+export const getUserProfile = async (credentials) => {
   try {
-    const response = await axios.post(
-      `${API_URL}/api/auth/resendOtp`,
-      { email }
-    );
-
-    return response.data;
+    return await get(`${API_URL}/me`)
   } catch (error) {
-    const message =
-      error.response?.data?.message ||
-      "Failed to resend OTP. Please try again.";
-
-    throw new Error(message);
-  }
-};
-
-export const forgotPassword = async ({ email }) => {
-  console.log("email",email)
-  try {
-    const response = await axios.post(
-      `${API_URL}/api/auth/forgotPassword`,
-      { email }
-    );
-
-    return response.data;
-  } catch (error) {
-    const message =
-      error.response?.data?.message ||
-      "Failed to resend OTP. Please try again.";
-
-    throw new Error(message);
-  }
-};
-
-
-export const resetPassword = async ({ email , password}) => {
-  console.log("email",email)
-  try {
-    const response = await axios.post(
-      `${API_URL}/api/auth/resetPassword`,
-      { email ,password }
-    );
-
-    return response.data;
-  } catch (error) {
-    const message =
-      error.response?.data?.message ||
-      "Failed to resend OTP. Please try again.";
-
-    throw new Error(message);
-  }
-};
-
-export const loginUser = async (credentials) => {
-  console.log("there is past ",credentials)
-  
-  try {
-    const response = await axios.post(`${API_URL}/api/auth/signin`, credentials)
-    return response
-  } catch (error) {
-    // console.error("Login error:", {
-    //   message: error.message,
-    //   status: error.response?.status,
-    //   data: error.response?.data,
-    // })
-
-    // Handle specific error types
-    if (error.response?.status === 401) {
-      throw new Error("Invalid password")
-    } else if (error.response?.status >= 500) {
-      throw new Error("Server error. Please try again later.")
-    } else if (error.response?.data?.message) {
-      throw new Error(error.response.data.message)
-    }
-
-    throw new Error("Login failed. Please try again.")
+    throw error
   }
 }

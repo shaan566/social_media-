@@ -63,3 +63,12 @@ body {
 .label{
   @apply text-black text-lg font-medium;
 }
+
+/* index.css */
+body {
+  @apply bg-white text-black;
+}
+
+.dark body {
+  @apply bg-gray-900 text-white;
+}

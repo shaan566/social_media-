@@ -81,21 +81,35 @@ const columns = [
               {/* <button className="flex items-center gap-1 text-gray-600">Filter by Channels</button>
               <button className="flex items-center gap-1 text-gray-600">Filter by Tags</button>
               <button className="flex items-center gap-1 text-gray-600">Timezone Kolkata</button> */}
-              <div  className= "flex justify-end px-6">
+              {/* <div  className= "flex justify-end px-6">
               <button className="bg-green-500 w-25 h-12 px-4 py-2 text-black px-4 py-2 rounded-md text-sm font-medium flex items-center gap-2">New Idea</button>
-           </div>
-  <div className=" py-5 px-10 flex gap-6 overflow-x-auto">
-  {activeTab === 'Idea' &&
-    columns.map((col, index) => (
-      <Createideas
-        key={index}
-        title={col.title}
-        ideas={col.ideas}
-        onAdd={() => console.log(`Add in ${col.title}`)}
-        onNewIdea={() => console.log(`New Idea in ${col.title}`)}
-      />
-    ))
-  }
+           </div> */}
+       <div className='flex flex-col'>
+
+  {/* ✅ Show button only for Idea tab */}
+  {activeTab === 'Idea' && (
+    <div className="flex justify-end px-6">
+      <button className="bg-green-500 h-12 px-4 text-black rounded-md text-sm font-medium">
+        New Idea
+      </button>
+    </div>
+  )}
+
+  {/* Feed Section */}
+  <div className="py-5 px-10 flex gap-6 overflow-x-auto">
+    {activeTab === 'Idea' &&
+      columns.map((col, index) => (
+        <Createideas
+          key={index}
+          title={col.title}
+          ideas={col.ideas}
+          onAdd={() => console.log(`Add in ${col.title}`)}
+          onNewIdea={() => console.log(`New Idea in ${col.title}`)}
+        />
+      ))
+    }
+  </div>
+
 </div>
   
         {/* Main Content Area */}
