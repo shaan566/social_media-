@@ -83,12 +83,12 @@ export const sendEmail = async (options) => {
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
     console.warn("⚠️ Email service not configured. Missing EMAIL_USER or EMAIL_PASS")
 
-    if (process.env.NODE_ENV === "development") {
-      const testAccount = await createTestAccount()
-      if (testAccount) {
-        return sendEmailWithTestAccount(options, testAccount)
-      }
-    }
+    // if (process.env.NODE_ENV === "development") {
+    //   const testAccount = await createTestAccount()
+    //   if (testAccount) {
+    //     return sendEmailWithTestAccount(options, testAccount)
+    //   }
+    // }
 
     return {
       success: false,
@@ -143,12 +143,12 @@ export const sendEmail = async (options) => {
       subject: options.subject,
     })
 
-    if (error.code === "EAUTH" && process.env.NODE_ENV === "development") {
-      const testAccount = await createTestAccount()
-      if (testAccount) {
-        return sendEmailWithTestAccount(options, testAccount)
-      }
-    }
+    // if (error.code === "EAUTH" && process.env.NODE_ENV === "development") {
+    //   const testAccount = await createTestAccount()
+    //   if (testAccount) {
+    //     return sendEmailWithTestAccount(options, testAccount)
+    //   }
+    // }
     throw error
   }
 }

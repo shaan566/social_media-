@@ -7,6 +7,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginUser } from "./../../services/authServices";
+import { useAuth } from "../../hooks/useAuth";
 
 // Validation
 const loginSchema = z.object({
@@ -18,7 +19,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [showPw, setShowPw] = useState(false);
   const [serverError, setServerError] = useState("");
-
+const { login } = useAuth();
   const {
     register,
     handleSubmit,
@@ -27,15 +28,27 @@ export default function Login() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = async (data) => {
-    setServerError("");
-    try {
-      await loginUser(data);
-      navigate("/dashboard");
-    } catch (err) {
-      setServerError(err.message);
-    }
-  };
+const onSubmit = async (data) => {
+  setServerError("");
+
+  try {
+    const res = await loginUser(data); // ✅ store response
+
+    // ✅ save user + token globally
+    login({
+      user: res.data.user,
+      token: res.data.token,
+      role: res.data.user.role || "user",
+    });
+
+    console.log("infor",res.data.user)
+    console.log("sss")
+    navigate("/create");
+
+  } catch (err) {
+    setServerError(err.message || "Login failed");
+  }
+};
 
   return (
     <div className="min-h-screen flex bg-white font-sans">
