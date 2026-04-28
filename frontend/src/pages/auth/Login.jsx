@@ -137,7 +137,7 @@ const onSubmit = async (data) => {
             id="remember-me"
               type="checkbox"
               {...register("rememberMe")}
-              className="accent-green-400 cursor-pointer"
+              className="accent-green-300 cursor-pointer"
             />
             <label htmlFor="remember-me"
             className="text-sm text-gray-600">Remember me</label>

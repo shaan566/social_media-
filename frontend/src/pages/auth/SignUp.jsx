@@ -159,15 +159,17 @@ export default function SignUp() {
           {/* Terms */}
           <div className="flex items-start gap-2 text-sm">
             <input
+             id = "agreetearms"
               type="checkbox"
               {...register("agreeToTerms")}
-              className="accent-green-300 mt-1"
+              className="accent-blue-300 mt-1"
             />
-            <span className="text-gray-600">
+            <label
+            htmlFor="agreetearms" className="text-gray-600">
               I agree to{' '}
               <span className="font-semibold underline">Terms</span> and{' '}
               <span className="font-semibold underline">Privacy</span>
-            </span>
+            </label>
           </div>
           {errors.agreeToTerms && (
             <p className="text-xs text-red-500">
