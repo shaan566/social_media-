@@ -7,7 +7,7 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 
-
+// Import routes
 import authRoutes from "./routes/authRoute.js";
 import connectDB from "./config/db.js";
 
@@ -39,7 +39,7 @@ const limiter = rateLimit({
   max: 100,
   message: "Too many requests, try again later",
 });
-app.use("/api", limiter);
+
 
 /* =======================
    CORS
@@ -63,10 +63,10 @@ app.use(express.urlencoded({ extended: true }));
    ROUTES
 ======================= */
 app.get("/", (req, res) => {
-  res.send("Server running successfully 🚀");
+  res.send("Server running successfully 🚀", limiter);
 });
 
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes, limiter);
 
 /* =======================
    START SERVER

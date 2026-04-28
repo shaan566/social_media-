@@ -291,6 +291,235 @@ export const logout = async (req, res) => {
   }
 }
 
+// PHASE 1: Validate session - Check if user has valid cookies and restore session
+// This fixes Issue #2 (Stripe redirect logout) by allowing session recovery from server
+export const validateSession = async (req, res) => {
+  try {
+    const { token: accessToken, refreshToken: refreshTokenCookie } = req.cookies
+
+    console.log("[validateSession] Validating session from cookies")
+
+    // Check if we have any tokens in cookies
+    if (!accessToken && !refreshTokenCookie) {
+      return res.status(401).json({
+        success: false,
+        message: "No authentication cookies found",
+        sessionValid: false,
+      })
+    }
+
+    // Try to validate access token first
+    if (accessToken) {
+      try {
+        const decoded = await promisify(jwt.verify)(
+          accessToken,
+          process.env.JWT_SECRET
+        )
+
+        // Check if it's a guest user
+        if (decoded.isGuest || decoded.id === process.env.GUEST_USER_ID) {
+          console.log("[validateSession] Valid guest session found")
+          return res.status(200).json({
+            success: true,
+            message: "Guest session valid",
+            sessionValid: true,
+            data: {
+              user: {
+                _id: decoded.id,
+                sessionId: decoded.sessionId,
+                name: "Guest",
+                email: "guest@guest.com",
+                role: "guest",
+                isGuest: true,
+              },
+            },
+          })
+        }
+
+        // Regular user - fetch from database
+        const user = await User.findById(decoded.id).select("-password")
+
+        if (!user) {
+          return res.status(401).json({
+            success: false,
+            message: "User not found",
+            sessionValid: false,
+          })
+        }
+
+        // Sanitize user data
+        user.name = DOMPurify.sanitize(user.name, {
+          ALLOWED_TAGS: [],
+          ALLOWED_ATTR: [],
+          KEEP_CONTENT: true,
+        })
+        if (user.bio)
+          user.bio = DOMPurify.sanitize(user.bio, {
+            USE_PROFILES: { html: true },
+          })
+
+        console.log("[validateSession] Valid access token found for user:", user._id)
+
+        return res.status(200).json({
+          success: true,
+          message: "Session valid",
+          sessionValid: true,
+          data: {
+            user: {
+              _id: user._id,
+              name: user.name,
+              email: user.email,
+              role: user.role || "user",
+              phoneNumber: user.phoneNumber,
+              profileImage: user.profileImage,
+              bio: user.bio,
+              phoneVerified: user.phoneVerified,
+              emailVerified: user.emailVerified,
+              lastActiveDate: user.lastActiveDate,
+              createdAt: user.createdAt,
+              updatedAt: user.updatedAt,
+            },
+          },
+        })
+      } catch (tokenError) {
+        console.log(
+          "[validateSession] Access token invalid/expired:",
+          tokenError.message
+        )
+        // Access token invalid, try refresh token
+      }
+    }
+
+    // If access token is invalid or missing, try refresh token
+    if (refreshTokenCookie) {
+      try {
+        const storedToken = await Token.findOne({
+          token: refreshTokenCookie,
+          type: "refresh",
+        })
+
+        if (!storedToken || storedToken.expiresAt < new Date()) {
+          // Clean up invalid/expired token
+          await Token.deleteOne({ token: refreshTokenCookie, type: "refresh" })
+          return res.status(401).json({
+            success: false,
+            message: "Refresh token expired",
+            sessionValid: false,
+          })
+        }
+
+        // BACKEND ENFORCEMENT: Check inactivity timeout (using centralized config)
+        const lastActive = storedToken.lastActiveAt || storedToken.createdAt
+        const inactiveDuration = Date.now() - new Date(lastActive).getTime()
+
+        if (inactiveDuration > AUTH_CONFIG.INACTIVITY_TIMEOUT_MS) {
+          console.log(`[validateSession] Session inactive for ${Math.floor(inactiveDuration / 60000)} minutes (timeout: ${AUTH_CONFIG.INACTIVITY_TIMEOUT_MINUTES} min) - logging out`)
+
+          // Delete the token due to inactivity
+          await Token.deleteOne({ token: refreshTokenCookie, type: "refresh" })
+
+          return res.status(401).json({
+            success: false,
+            message: "Session expired due to inactivity",
+            sessionValid: false,
+            reason: "INACTIVITY_TIMEOUT",
+          })
+        }
+
+        // Generate new access token
+        const newAccessToken = generateToken(storedToken.userId)
+
+        // Implement token rotation
+        const newRefreshToken = await generateAndSaveRefreshToken(
+          storedToken.userId
+        )
+
+        // Delete old refresh token
+        await Token.deleteOne({ token: refreshTokenCookie, type: "refresh" })
+
+        // Update lastActiveAt for this refresh token
+        await Token.updateOne(
+          { token: newRefreshToken, type: "refresh" },
+          { lastActiveAt: new Date() }
+        )
+
+        // Set new cookies
+        setAuthCookies(res, newAccessToken, newRefreshToken)
+
+        // Get user data
+        const user = await User.findById(storedToken.userId).select("-password")
+
+        if (!user) {
+          return res.status(401).json({
+            success: false,
+            message: "User not found",
+            sessionValid: false,
+          })
+        }
+
+        // Sanitize user data
+        user.name = DOMPurify.sanitize(user.name, {
+          ALLOWED_TAGS: [],
+          ALLOWED_ATTR: [],
+          KEEP_CONTENT: true,
+        })
+        if (user.bio)
+          user.bio = DOMPurify.sanitize(user.bio, {
+            USE_PROFILES: { html: true },
+          })
+
+        console.log(
+          "[validateSession] Session recovered via refresh token for user:",
+          user._id
+        )
+
+        return res.status(200).json({
+          success: true,
+          message: "Session recovered and tokens refreshed",
+          sessionValid: true,
+          data: {
+            user: {
+              _id: user._id,
+              name: user.name,
+              email: user.email,
+              role: user.role || "user",
+              phoneNumber: user.phoneNumber,
+              profileImage: user.profileImage,
+              bio: user.bio,
+              phoneVerified: user.phoneVerified,
+              emailVerified: user.emailVerified,
+              lastActiveDate: user.lastActiveDate,
+              createdAt: user.createdAt,
+              updatedAt: user.updatedAt,
+            },
+          },
+        })
+      } catch (error) {
+        console.error("[validateSession] Refresh token error:", error)
+        return res.status(401).json({
+          success: false,
+          message: "Could not validate session",
+          sessionValid: false,
+        })
+      }
+    }
+
+    // No valid tokens found
+    return res.status(401).json({
+      success: false,
+      message: "No valid authentication tokens",
+      sessionValid: false,
+    })
+  } catch (error) {
+    console.error("[validateSession] Error:", error)
+    return res.status(500).json({
+      success: false,
+      message: "Error validating session",
+      sessionValid: false,
+      error: "INTERNAL_ERROR",
+    })
+  }
+}
 
 // Register a new user (OTP based)
 export const signup = async (req, res) => {

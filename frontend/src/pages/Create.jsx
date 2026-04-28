@@ -14,7 +14,7 @@ const ideasData = [
     id: 1,
     title: "A Roblox cheat and AI tool...",
     description: "Some description here...",
-    image: "https://via.placeholder.com/300"
+    image: "https://placehold.co/300"
   },
   {
     id: 2,
@@ -41,7 +41,7 @@ const columns = [
 ];
   const feeds = [{label: 'Idea' }, {label:"template"},{label:'feeds'}]
     return (
-      <div className= "h-screen w-auto flex flex-col bg-white rounded-t-4xl "> {/* Outer container for full viewport */}
+      <div className= "h-screen w-auto flex flex-col bg-white"> {/* Outer container for full viewport */}
         {/* Header Section */}
         <header className="bg-white p-4 space-y-4">
           {/* Row 1: Title and Primary Actions */}

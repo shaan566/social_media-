@@ -134,11 +134,13 @@ const onSubmit = async (data) => {
           {/* Remember */}
           <div className="flex items-center gap-2">
             <input
+            id="remember-me"
               type="checkbox"
               {...register("rememberMe")}
-              className="accent-yellow-400 cursor-pointer"
+              className="accent-green-400 cursor-pointer"
             />
-            <span className="text-sm text-gray-600">Remember me</span>
+            <label htmlFor="remember-me"
+            className="text-sm text-gray-600">Remember me</label>
           </div>
 
           {serverError && (

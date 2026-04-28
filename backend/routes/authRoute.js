@@ -9,7 +9,8 @@ import {
     otpLimiter,
     refreshToken,
     logout,
-    getMe 
+    getMe ,
+    validateSession
 } from '../controllers/AuthControllers.js';
 
 import { protect ,updateSessionActivity } from "../middleware/authMiddleware.js"
@@ -33,6 +34,13 @@ router.post("/verifyOtp", otpLimiter, verifyOtp);
 router.post("/resendOtp", otpLimiter, resendOtp);
 router.post("/forgotPassword",validateRequest(forgotPasswordSchema), otpLimiter, forgotPassword);
 router.post("/resetPassword", validateRequest(resetPasswordSchema), otpLimiter, resetPassword);
+
+
+
+// PHASE 1: Validate session route - NOT protected (used to check if cookies are valid)
+// This fixes Issue #2 (Stripe redirect logout)
+router.get("/validate-session", validateSession)
+
 
 // --- Token Management ---
 // Fixed the path and kept it public because it handles its own logic

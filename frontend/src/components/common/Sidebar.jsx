@@ -9,8 +9,8 @@ import { FiArrowLeftCircle } from "react-icons/fi";
 import CreateMenu from '../../Modals/CreateMenu'
 
 const channels = [
-  { name: "My Twitter",   platform: "Twitter",   posts: 0, avatar: "https://via.placeholder.com/28" },
-  { name: "My Instagram", platform: "Instagram", posts: 3, avatar: "https://via.placeholder.com/28" },
+  { name: "My Twitter",   platform: "Twitter",   posts: 0, avatar: "https://placehold.co/28" },
+  { name: "My Instagram", platform: "Instagram", posts: 3, avatar: "https://placehold.co/28" },
 ]
 
 const navItems = [

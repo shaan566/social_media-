@@ -25,13 +25,15 @@ import Layout from "./components/common/Layout"
 // Common
 import ComingSoon from './components/common/ComingSoon'
 
-// Loader
+
 const RouteLoadingFallback = () => <div>Loading...</div>
 
-
-// ✅ Protected Route
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth()
+const ProtectedRoute = ({
+  children,
+ 
+  
+}) => {
+  const { isAuthenticated, user, isLoading } = useAuth()
   const location = useLocation()
 
   if (isLoading) return <RouteLoadingFallback />
@@ -46,21 +48,36 @@ const ProtectedRoute = ({ children }) => {
     )
   }
 
-  return children
-}
+  
 
-
-// ✅ Auth Route (prevent logged user from going to login)
-const AuthRoute = ({ children }) => {
-  const { isAuthenticated } = useAuth()
-
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />
+  if (user && !user.emailVerified) {
+    return (
+      <Navigate
+        to="/login"
+        state={{
+          from: location,
+          message: "Please verify your email",
+        }}
+        replace
+      />
+    )
   }
 
   return children
 }
 
+
+const AuthRoute = ({ children }) => {
+  const { isAuthenticated, isLoading } = useAuth()
+
+  if (isLoading) return <RouteLoadingFallback />
+
+  if (isAuthenticated) {
+    return <Navigate to="/create"/>
+  }
+
+  return children
+}
 
 const App = () => {
   return (
