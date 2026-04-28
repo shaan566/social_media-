@@ -63,10 +63,10 @@ app.use(express.urlencoded({ extended: true }));
    ROUTES
 ======================= */
 app.get("/", (req, res) => {
-  res.send("Server running successfully 🚀", limiter);
+  res.send("Server running successfully 🚀");
 });
 
-app.use("/api/auth", authRoutes, limiter);
+app.use("/api/auth", limiter , authRoutes);
 
 /* =======================
    START SERVER
