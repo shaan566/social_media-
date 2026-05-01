@@ -6,7 +6,7 @@ import { MdAnalytics } from 'react-icons/md'
 import { IoChatbubblesOutline } from 'react-icons/io5'
 import { FiArrowRightCircle } from "react-icons/fi";
 import { FiArrowLeftCircle } from "react-icons/fi";
-import CreateMenu from '../../Modals/CreateMenu'
+// import CreateMenu from '../../Modals/CreateModal/CreateMenu'
 
 const channels = [
   { name: "My Twitter",   platform: "Twitter",   posts: 0, avatar: "https://placehold.co/28" },

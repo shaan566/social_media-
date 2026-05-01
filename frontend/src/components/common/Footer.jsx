@@ -83,9 +83,14 @@ const Footer = () => {
         {/* Brand block */}
         <div className="flex flex-col gap-5 max-w-xs">
           <div>
-            <span className="text-4xl font-black tracking-tight text-blue-600">
-              S<span className="text-black">chedly</span>
-            </span>
+                  
+                    <Link
+                      to="/"
+                      className="mr-auto text-xl font-bold tracking-tight text-gray-900 shrink-0"
+                    >
+                    <span className="text-[40px] font-bold leading-[56px] text-blue-600">S</span>
+                    chedly.
+                    </Link>
             <p className="mt-3 text-sm text-white/50 leading-relaxed">
               Schedule smarter. Grow faster. Built for Indian businesses who
               take social media seriously.

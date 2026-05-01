@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
-// import mongoSanitize from "express-mongo-sanitize";
+import mongoSanitize from "express-mongo-sanitize";
 import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 
@@ -11,27 +11,57 @@ import rateLimit from "express-rate-limit";
 import authRoutes from "./routes/authRoute.js";
 import connectDB from "./config/db.js";
 
+// Env validation
+import {
+  validateEnvironment,
+  printValidationResults,
+} from "./utils/envValidator.js";
+
+import { validateAuthConfig } from "./config/auth.config.js";
+
 dotenv.config();
 
 const app = express();
 
+/* =======================
+   VALIDATIONS
+======================= */
+const validationResults = validateEnvironment();
+const isValid = printValidationResults(validationResults);
 
-app.set('trust proxy', 1);
+if (!isValid && process.env.NODE_ENV === "production") {
+  console.error("💥 Invalid config in production");
+  process.exit(1);
+}
+
+if (!isValid) {
+  console.warn("⚠️ Running with warnings (dev mode)\n");
+}
+
+try {
+  validateAuthConfig();
+} catch (error) {
+  console.error("💥 Auth config error:", error.message);
+  process.exit(1);
+}
 
 /* =======================
    DATABASE
 ======================= */
 connectDB();
 
-
 /* =======================
-   SECURITY MIDDLEWARE
+   MIDDLEWARE
 ======================= */
+app.set("trust proxy", 1);
+
 app.use(helmet());
 app.use(compression());
-// app.use(mongoSanitize({
-//   sanitizeQuery: false,
-// }));
+app.use(
+  mongoSanitize({
+    sanitizeQuery: false,
+  })
+);
 app.use(cookieParser());
 
 const limiter = rateLimit({
@@ -39,7 +69,6 @@ const limiter = rateLimit({
   max: 100,
   message: "Too many requests, try again later",
 });
-
 
 /* =======================
    CORS
@@ -66,13 +95,25 @@ app.get("/", (req, res) => {
   res.send("Server running successfully 🚀");
 });
 
-app.use("/api/auth", limiter , authRoutes);
+app.use("/api/auth", limiter, authRoutes);
 
 /* =======================
-   START SERVER
+   ERROR HANDLER (LAST)
 ======================= */
-const PORT = process.env.PORT || 5000;
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+
+  res.status(500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
+});
+
+/* =======================
+   START SERVER (LAST)
+======================= */
+const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

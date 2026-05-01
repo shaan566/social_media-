@@ -1,11 +1,13 @@
 import React from 'react'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Createideas from '../Modals/Createideas';
+import Createideas from '../Modals/CreateModal/Createideas';
+import CreateIdeaModal from '../Modals/CreateModal/CreateIdeaModal';
 
 
 const Create = () => {
     const [activeTab, setActiveTab] = useState('Idea');
+    const [openModal, setOpenModal] = useState(false);
 
     const navigate = useNavigate();
 
@@ -51,6 +53,15 @@ const columns = [
               <h1 className="text-3xl font-semibold">Create</h1>
             </div>
           </div>
+
+          <CreateIdeaModal
+  isOpen={openModal}
+  onClose={() => setOpenModal(false)}
+  onSave={(data) => {
+    console.log("New Idea:", data);
+    // 🔥 call backend API here
+  }}
+/>
   
           {/* Row 2: Tabs and Filters */}
           <div className="flex justify-between items-center border-b px-3 py-3.5 border-gray-200">
@@ -89,7 +100,8 @@ const columns = [
   {/* ✅ Show button only for Idea tab */}
   {activeTab === 'Idea' && (
     <div className="flex justify-end px-6">
-      <button className="bg-green-500 h-12 px-4 text-black rounded-md text-sm font-medium">
+      <button onClick={() => setOpenModal(true)}
+       className="bg-green-500 h-12 px-4 text-black rounded-md text-sm font-medium">
         New Idea
       </button>
     </div>
@@ -97,7 +109,8 @@ const columns = [
 
   {/* Feed Section */}
   <div className="py-5 px-10 flex gap-6 overflow-x-auto">
-    {activeTab === 'Idea' &&
+    {activeTab === 'Idea' && 
+    
       columns.map((col, index) => (
         <Createideas
           key={index}

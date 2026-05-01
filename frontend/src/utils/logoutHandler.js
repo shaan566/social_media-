@@ -15,7 +15,7 @@ export const isProtectedRoute = (pathname) => {
   // List of protected route patterns
   const protectedPatterns = [
     '/dashboard',
-    '/organizer',
+    '/create',
     '/attendee',
     '/create-event',
     '/create-tickets',

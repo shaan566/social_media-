@@ -16,7 +16,9 @@ import Schedule from './pages/Schedule.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import Analytics from './pages/Analytics.jsx'
 import Create from './pages/Create.jsx'
-import Createideas from './Modals/Createideas.jsx'
+import Createideas from "./Modals/CreateModal/Createideas.jsx"
+// import Createideas from '../modals/CreateModal/Createideas.jsx'
+
 
 // Layouts
 import MainLayout from "./layouts/MainLayout"
