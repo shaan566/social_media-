@@ -8,7 +8,7 @@ import {
 import {logoutUser } from "../services/authServices"
 // import { magicLinkService } from "../services/magicLinkService"
 import { startTokenRefreshInterval, stopTokenRefreshInterval } from "../utils/apiClient"
-import inactivityManager from "../utils/inactivityManager"
+import inactivityManager from "../utils/InactivityManager"
 import browserCloseDetector from "../utils/browserCloseDetector"
 import { handleLogoutRedirect, storeReturnRoute, isProtectedRoute } from "../utils/logoutHandler"
 import tabCommunicator from "../utils/tabCommunicator"
