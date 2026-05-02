@@ -1,5 +1,5 @@
-import inactivityManager from './inactivityManager'
-import tabCommunicator from './tabCommunicator'
+import inactivityManager from './InactivityManager'
+import tabCommunicator from './TabCommunicator'
 
 
 
