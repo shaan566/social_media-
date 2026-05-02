@@ -14,7 +14,7 @@ export const registerUser = async (userData) => {
 
 export const verifyOtp = async (userInfo) => {
   try {
-    return await post(`${API_URL}/verifyOtp`, userInfo)
+    return await post(`${API_URL}/otp/verify`, userInfo)
   } catch (error) {
     throw new Error(error.message || "OTP verification failed")
   }
@@ -22,7 +22,7 @@ export const verifyOtp = async (userInfo) => {
 
 export const resendOtp = async ({ email }) => {
   try {
-    return await post(`${API_URL}/resendOtp`, { email })
+    return await post(`${API_URL}/otp/resend`, { email })
   } catch (error) {
     throw new Error(error.message || "Failed to resend OTP")
   }
@@ -30,7 +30,7 @@ export const resendOtp = async ({ email }) => {
 
 export const forgotPassword = async ({ email }) => {
   try {
-    return await post(`${API_URL}/forgotPassword`, { email })
+    return await post(`${API_URL}/forgot-password`, { email })
   } catch (error) {
     throw new Error(error.message || "Failed to send reset email")
   }
@@ -38,7 +38,7 @@ export const forgotPassword = async ({ email }) => {
 
 export const resetPassword = async ({ email, password }) => {
   try {
-    return await post(`${API_URL}/resetPassword`, { email, password })
+    return await post(`${API_URL}/reset-password`, { email, password })
   } catch (error) {
     throw new Error(error.message || "Failed to reset password")
   }

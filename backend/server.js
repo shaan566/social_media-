@@ -64,11 +64,36 @@ app.use(
 );
 app.use(cookieParser());
 
+
+
+// ========== PERFORMANCE FIX: Request-Level Timeout Middleware ==========
+// Add timeout handler for individual requests (especially for /api/create creation)
+app.use((req, res, next) => {
+  // Set request timeout to 120 seconds
+  req.setTimeout(120000, () => {
+    console.error(`⏱️  Request timeout: ${req.method} ${req.url}`)
+    if (!res.headersSent) {
+      res.status(408).json({
+        success: false,
+        message:
+          "Request timeout - the operation took too long. Please try again.",
+        hint: "If publishing an event, ensure your images are optimized (< 5MB each)",
+      })
+    }
+  })
+  next()
+})
+
+
+// Rate limiting for specific auth routes (excluding refresh-token)
 const limiter = rateLimit({
+  max: process.env.RATE_LIMIT_MAX || 100,
   windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: "Too many requests, try again later",
-});
+  message: "Too many requests from this IP, please try again after 15 minutes",
+  standardHeaders: true,
+  legacyHeaders: false,
+})
+
 
 /* =======================
    CORS
@@ -95,15 +120,51 @@ app.get("/", (req, res) => {
   res.send("Server running successfully 🚀");
 });
 
+// Apply rate limiting to specific auth endpoints (refresh-token excluded)
 app.use("/api/auth", limiter, authRoutes);
 
+
+
+
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  const now = new Date()
+  const formattedTimestamp = new Intl.DateTimeFormat(undefined, {
+    year: "numeric",
+    month: "long",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZoneName: "short",
+    hour12: true,
+  }).format(now)
+
+  res.status(200).json({
+    success: true,
+    message: "Server is running",
+    environment: process.env.NODE_ENV,
+    timestamp: formattedTimestamp,
+  })
+})
+
+
+
+app.use("*", (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route not found: ${req.originalUrl}`,
+  });
+});
 /* =======================
    ERROR HANDLER (LAST)
 ======================= */
 app.use((err, req, res, next) => {
   console.error(err.stack);
 
-  res.status(500).json({
+  const statusCode = err.statusCode || 500;
+
+  res.status(statusCode).json({
     success: false,
     message: err.message || "Internal Server Error",
   });
