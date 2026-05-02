@@ -11,7 +11,7 @@ import { startTokenRefreshInterval, stopTokenRefreshInterval } from "../utils/ap
 import inactivityManager from "../utils/InactivityManager"
 import browserCloseDetector from "../utils/browserCloseDetector"
 import { handleLogoutRedirect, storeReturnRoute, isProtectedRoute } from "../utils/logoutHandler"
-import tabCommunicator from "../utils/tabCommunicator"
+import tabCommunicator from "../utils/TabCommunicator"
 
 // Auth provider component
 export const AuthProvider = ({ children }) => {
