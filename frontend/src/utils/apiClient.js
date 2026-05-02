@@ -56,6 +56,16 @@ export const patch = (url, body, options = {}) => fetchWithAuth(url, {
   body: JSON.stringify(body),
 })
 
+
+/**
+ * Notify all subscribers when token refresh completes
+ */
+const onTokenRefreshed = (success) => {
+  refreshSubscribers.forEach((callback) => callback(success))
+  refreshSubscribers = []
+}
+
+
 /**
  * Stop automatic token refresh interval
  */
