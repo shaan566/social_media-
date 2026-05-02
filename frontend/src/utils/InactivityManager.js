@@ -10,7 +10,7 @@
  * - Uses centralized configuration from .env
  */
 
-import tabCommunicator from './tabCommunicator'
+import tabCommunicator from './TabCommunicator'
 
 class InactivityManager {
   constructor() {
