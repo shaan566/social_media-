@@ -160,13 +160,13 @@ export const refreshToken = async (req, res) => {
     await Token.deleteOne({ token: requestRefreshToken, type: 'refresh' })
 
     // Set both new access token and new refresh token cookies
-    // const isProduction = process.env.NODE_ENV === "production"
-    // const cookieOptions = {
-    //   httpOnly: true,
-    //   secure: isProduction,
-    //   sameSite: isProduction ? "none" : "lax",
-    //   path: "/",
-    // }
+    const isProduction = process.env.NODE_ENV === "production"
+    const cookieOptions = {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      path: "/",
+    }
 
     res.cookie("token", newAccessToken, {
       ...cookieOptions,
